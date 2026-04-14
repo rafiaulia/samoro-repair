@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard — RAS REPAIR</title>
 
+  <!-- Google Fonts - Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <!-- CSS lama -->
@@ -12,6 +17,7 @@
   <link rel="stylesheet" href="css/custom.css">
   <!-- CSS admin — load TERAKHIR -->
   <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -274,7 +280,64 @@
 
   </div><!-- /adm-dashboard-section -->
 
+<!-- Modal Cetak Nota -->
+<div id="adm-nota-overlay" class="adm-nota-overlay" onclick="admTutupNota(event)">
+  <div class="adm-nota-modal" id="adm-nota-modal">
 
+    <!-- Konten nota (ini yang dicetak) -->
+    <div class="adm-nota-wrap" id="adm-nota-wrap">
+      <div class="adm-nota-header">
+        <p class="adm-nota-brand">RAS REPAIR</p>
+        <p class="adm-nota-sub">Nota Servis</p>
+        <p class="adm-nota-sub" id="adm-nota-tgl"></p>
+      </div>
+
+      <div class="adm-nota-resi">
+        <p class="adm-nota-resi-label">No. Resi</p>
+        <p class="adm-nota-resi-val" id="adm-nota-resi"></p>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div class="adm-nota-row">
+          <span class="adm-nota-key">Nama Customer</span>
+          <span class="adm-nota-val" id="adm-nota-nama"></span>
+        </div>
+        <div class="adm-nota-row">
+          <span class="adm-nota-key">Perangkat</span>
+          <span class="adm-nota-val" id="adm-nota-device"></span>
+        </div>
+        <div class="adm-nota-row">
+          <span class="adm-nota-key">Jenis Layanan</span>
+          <span class="adm-nota-val" id="adm-nota-layanan"></span>
+        </div>
+        <div class="adm-nota-row">
+          <span class="adm-nota-key">Keluhan</span>
+          <span class="adm-nota-val" id="adm-nota-keluhan" style="max-width:220px;"></span>
+        </div>
+        <div class="adm-nota-row">
+          <span class="adm-nota-key">Status</span>
+          <span class="adm-nota-val">
+            <span class="adm-nota-status" id="adm-nota-status"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="adm-nota-footer">
+        <p>Simpan nota ini sebagai bukti pengumpulan perangkat.</p>
+        <p>Terima kasih telah mempercayakan servis Anda kepada kami! 🙏</p>
+      </div>
+    </div>
+
+    <div class="adm-nota-actions">
+      <button class="adm-btn adm-btn-ghost adm-btn-sm" onclick="admTutupNota()">Tutup</button>
+      <button id="adm-nota-dl-btn" class="adm-btn adm-btn-secondary adm-btn-sm" onclick="admDownloadNota()">
+  ⬇️ Download
+</button>
+<button class="adm-btn adm-btn-primary adm-btn-sm" onclick="window.print()">🖨️ Cetak</button>
+    </div>
+
+  </div>
+</div>
   <!-- Toast -->
   <div id="adm-toast" class="adm-toast"></div>
 

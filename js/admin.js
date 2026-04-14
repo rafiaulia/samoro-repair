@@ -76,10 +76,46 @@ function admEscHtml(str) {
   return div.innerHTML;
 }
 
-function admFormatTanggal(dateStr) {
-  return new Date(dateStr).toLocaleDateString('id-ID', {
-    day: '2-digit', month: 'short', year: 'numeric',
+/**
+ * Copy text to clipboard
+ * @param {string} text
+ */
+function admCopyResi(text) {
+  if (!navigator.clipboard) {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      admToast('✓ Resi ' + text + ' berhasil disalin!', 'ok');
+    } catch (err) {
+      admToast('Gagal menyalin resi', 'err');
+    }
+    document.body.removeChild(textarea);
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    admToast('✓ Resi ' + text + ' berhasil disalin!', 'ok');
+  }).catch(() => {
+    admToast('Gagal menyalin resi', 'err');
   });
+}
+
+function admFormatTanggal(dateStr) {
+  return new Date(dateStr).toLocaleString('id-ID', {
+    day    : '2-digit',
+    month  : 'short',
+    year   : 'numeric',
+    hour   : '2-digit',
+    minute : '2-digit',
+    timeZone      : 'Asia/Jakarta',
+    hour12 : false,
+  }) + ' WIB';
 }
 
 function admShowEl(id, display = 'block') {
@@ -216,7 +252,17 @@ function admRenderTabel(orders) {
 
   tbody.innerHTML = orders.map(o => `
     <tr>
-      <td><code class="adm-resi-code">${admEscHtml(o.resi)}</code></td>
+      <td>
+        <div class="adm-resi-cell">
+          <code class="adm-resi-code">${admEscHtml(o.resi)}</code>
+          <button class="adm-btn-copy" onclick="admCopyResi('${admEscHtml(o.resi)}')" title="Salin nomor resi">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+      </td>
       <td>${admEscHtml(o.nama_customer)}</td>
       <td>${admEscHtml(o.nama_device)}</td>
       <td>${admEscHtml(o.layanan)}</td>
@@ -236,12 +282,14 @@ function admRenderTabel(orders) {
         ${admFormatTanggal(o.created_at)}
       </td>
       <td>
-        <div class="d-flex gap-1">
-          <button class="adm-btn adm-btn-secondary adm-btn-sm"
-            onclick="admEditOrder(${o.id})">Edit</button>
-          <button class="adm-btn adm-btn-danger adm-btn-sm"
-            onclick="admHapusOrder(${o.id}, '${admEscHtml(o.resi)}')">Hapus</button>
-        </div>
+<div class="d-flex gap-1">
+  <button class="adm-btn adm-btn-secondary adm-btn-sm"
+    onclick="admEditOrder(${o.id})">Edit</button>
+  <button class="adm-btn adm-btn-danger adm-btn-sm"
+    onclick="admHapusOrder(${o.id}, '${admEscHtml(o.resi)}')">Hapus</button>
+  <button class="adm-btn adm-btn-print adm-btn-sm"
+    onclick="admCetakNota(${o.id})">🖨️</button>
+</div>
       </td>
     </tr>
   `).join('');
@@ -382,6 +430,18 @@ function admEditOrder(id) {
   admSetTeks('adm-form-title', '✎ Edit Order');
   document.getElementById('adm-cancel-btn').style.display  = 'inline-flex';
   document.getElementById('adm-submit-btn').textContent    = 'Perbarui Order';
+  // Tampilkan tombol cetak saat mode edit
+let printBtn = document.getElementById('adm-edit-print-btn');
+if (!printBtn) {
+  printBtn = document.createElement('button');
+  printBtn.type      = 'button';
+  printBtn.id        = 'adm-edit-print-btn';
+  printBtn.className = 'adm-btn adm-btn-print adm-btn-sm';
+  printBtn.textContent = '🖨️ Cetak Nota';
+  printBtn.onclick   = () => admCetakNota(parseInt(document.getElementById('adm-edit-id').value));
+  document.getElementById('adm-submit-btn').insertAdjacentElement('afterend', printBtn);
+}
+printBtn.style.display = 'inline-flex';
   admSembError('adm-form-error');
 
   document.getElementById('adm-form-card').scrollIntoView({
@@ -405,6 +465,9 @@ function admResetForm() {
   admSetTeks('adm-form-title', 'Tambah Order Baru');
   admSembError('adm-form-error');
   admGenerateResi();
+  // Sembunyikan tombol cetak saat kembali ke mode tambah
+const printBtn = document.getElementById('adm-edit-print-btn');
+if (printBtn) printBtn.style.display = 'none';
 }
 
 /**
@@ -425,7 +488,86 @@ async function admHapusOrder(id, resi) {
   admToast('✓ Order berhasil dihapus!');
   admMuatOrder();
 }
+// ================================================
+// 🖨️  CETAK NOTA
+// ================================================
 
+const ADM_NOTA_STATUS_COLORS = {
+  'masuk'            : 'background:var(--adm-blue-50);color:var(--adm-blue-700);border-color:var(--adm-blue-200)',
+  'proses perbaikan' : 'background:var(--adm-yellow-50);color:var(--adm-yellow-600);border-color:var(--adm-yellow-100)',
+  'siap diambil'     : 'background:var(--adm-purple-50);color:var(--adm-purple-600);border-color:var(--adm-purple-100)',
+  'selesai'          : 'background:var(--adm-green-50);color:var(--adm-green-600);border-color:var(--adm-green-100)',
+};
+
+/**
+ * Buka modal preview nota lalu bisa cetak
+ * @param {number} id
+ */
+function admCetakNota(id) {
+  const o = _admOrders.find(o => o.id === id);
+  if (!o) return;
+
+  // Isi konten nota
+  document.getElementById('adm-nota-resi').textContent    = o.resi;
+  document.getElementById('adm-nota-nama').textContent    = o.nama_customer;
+  document.getElementById('adm-nota-device').textContent  = o.nama_device;
+  document.getElementById('adm-nota-layanan').textContent = o.layanan;
+  document.getElementById('adm-nota-keluhan').textContent = o.keluhan;
+  document.getElementById('adm-nota-tgl').textContent     = admFormatTanggal(o.created_at);
+
+  const statusEl = document.getElementById('adm-nota-status');
+  statusEl.textContent = ADM_STATUS_LABELS[o.status] || o.status;
+  statusEl.style.cssText = ADM_NOTA_STATUS_COLORS[o.status] || '';
+
+  // Tampilkan modal
+  document.getElementById('adm-nota-overlay').classList.add('adm-visible');
+  document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Tutup modal nota
+ * @param {Event} e - Jika click di overlay (bukan modal), tutup
+ */
+function admTutupNota(e) {
+  // Kalau dipanggil dari onclick overlay, tutup hanya jika klik di luar modal
+  if (e && e.target !== document.getElementById('adm-nota-overlay')) return;
+
+  document.getElementById('adm-nota-overlay').classList.remove('adm-visible');
+  document.body.style.overflow = '';
+}
+/**
+ * Download nota sebagai gambar PNG
+ * Hasil visual sama persis dengan preview (html2canvas)
+ */
+async function admDownloadNota() {
+  const el  = document.getElementById('adm-nota-wrap');
+  const btn = document.getElementById('adm-nota-dl-btn');
+
+  btn.textContent = 'Memproses...';
+  btn.disabled    = true;
+
+  try {
+    const canvas = await html2canvas(el, {
+      scale      : 2,          // 2x resolusi supaya tajam
+      useCORS    : true,
+      backgroundColor: '#ffffff',
+    });
+
+    // Ambil nama resi untuk nama file
+    const resi = document.getElementById('adm-nota-resi').textContent || 'nota';
+
+    const link    = document.createElement('a');
+    link.download = `nota-${resi}.png`;
+    link.href     = canvas.toDataURL('image/png');
+    link.click();
+  } catch (err) {
+    admToast('Gagal membuat gambar nota!', 'err');
+    console.error('[admDownloadNota]', err);
+  } finally {
+    btn.textContent = '⬇️ Download';
+    btn.disabled    = false;
+  }
+}
 // ================================================
 // 🚀 INIT
 // ================================================
