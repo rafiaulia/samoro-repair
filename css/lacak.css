@@ -1,0 +1,498 @@
+/* ================================================
+   RAS-REPAIR — lacak.css
+   Semua class pakai prefix "lacak-" supaya tidak
+   bentrok dengan styles.css / custom.css yang lama.
+   Bootstrap tetap dipakai untuk layout & utilitas.
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&display=swap');
+
+/* ── Variables ──────────────────────────────────── */
+:root {
+  --lacak-blue-700 : #1D4ED8;
+  --lacak-blue-600 : #2563EB;
+  --lacak-blue-500 : #3B82F6;
+  --lacak-blue-200 : #BFDBFE;
+  --lacak-blue-100 : #DBEAFE;
+  --lacak-blue-50  : #EFF6FF;
+
+  --lacak-gray-900 : #0F172A;
+  --lacak-gray-700 : #334155;
+  --lacak-gray-500 : #64748B;
+  --lacak-gray-400 : #94A3B8;
+  --lacak-gray-300 : #CBD5E1;
+  --lacak-gray-200 : #E2E8F0;
+  --lacak-gray-100 : #F1F5F9;
+  --lacak-gray-50  : #F8FAFC;
+
+  --lacak-green-600: #16A34A;
+  --lacak-green-100: #DCFCE7;
+  --lacak-green-50 : #F0FDF4;
+
+  --lacak-yellow-600: #CA8A04;
+  --lacak-yellow-100: #FEF9C3;
+  --lacak-yellow-50 : #FEFCE8;
+
+  --lacak-purple-600: #9333EA;
+  --lacak-purple-100: #F3E8FF;
+  --lacak-purple-50 : #FAF5FF;
+
+  --lacak-red-600  : #DC2626;
+  --lacak-red-100  : #FEE2E2;
+  --lacak-red-50   : #FFF1F2;
+
+  --lacak-radius-sm  : 8px;
+  --lacak-radius-md  : 12px;
+  --lacak-radius-lg  : 16px;
+  --lacak-radius-xl  : 20px;
+  --lacak-radius-2xl : 28px;
+  --lacak-radius-full: 9999px;
+
+  --lacak-shadow-md : 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --lacak-shadow-lg : 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -4px rgba(0,0,0,0.05);
+  --lacak-shadow-xl : 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05);
+  --lacak-shadow-blue: 0 4px 14px rgba(37,99,235,0.28);
+
+  --lacak-transition: all 0.18s ease;
+}
+
+/* ── Page wrapper ───────────────────────────────── */
+.lacak-page {
+  background: var(--lacak-gray-50);
+  min-height: 100vh;
+}
+
+/* ── Hero ───────────────────────────────────────── */
+.lacak-hero {
+  text-align: center;
+  padding: 3.5rem 1rem 2rem;
+}
+
+.lacak-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lacak-blue-600);
+  background: var(--lacak-blue-50);
+  border: 1px solid var(--lacak-blue-200);
+  padding: 0.35rem 0.875rem;
+  border-radius: var(--lacak-radius-full);
+  margin-bottom: 1.25rem;
+}
+
+.lacak-hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--lacak-gray-900);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.875rem;
+}
+
+.lacak-hero-title .lacak-accent { color: var(--lacak-blue-600); }
+
+.lacak-hero-desc {
+  color: var(--lacak-gray-500);
+  font-size: 0.975rem;
+  line-height: 1.75;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* ── Search Card ────────────────────────────────── */
+.lacak-search-card {
+  background: #fff;
+  border-radius: var(--lacak-radius-2xl);
+  border: 1px solid var(--lacak-gray-200);
+  box-shadow: var(--lacak-shadow-lg);
+  padding: 1.625rem 1.75rem;
+  max-width: 560px;
+  margin: 0 auto 2rem;
+}
+
+.lacak-search-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--lacak-gray-500);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 0.625rem;
+}
+
+.lacak-search-input {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--lacak-gray-900);
+  background: var(--lacak-gray-50);
+  border: 1.5px solid var(--lacak-gray-200);
+  border-radius: var(--lacak-radius-sm);
+  padding: 0.7rem 1rem;
+  width: 100%;
+  outline: none;
+  transition: var(--lacak-transition);
+}
+
+.lacak-search-input:focus {
+  border-color: var(--lacak-blue-500);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.lacak-search-input::placeholder {
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: normal;
+  color: var(--lacak-gray-300);
+  font-family: inherit;
+}
+
+.lacak-search-btn {
+  background: var(--lacak-blue-600);
+  color: #fff;
+  border: none;
+  border-radius: var(--lacak-radius-sm);
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--lacak-transition);
+  white-space: nowrap;
+}
+
+.lacak-search-btn:hover:not(:disabled) {
+  background: var(--lacak-blue-700);
+  transform: translateY(-1px);
+  box-shadow: var(--lacak-shadow-blue);
+}
+
+.lacak-search-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Error message ──────────────────────────────── */
+.lacak-error {
+  color: var(--lacak-red-600);
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--lacak-red-50);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--lacak-radius-sm);
+  border: 1px solid var(--lacak-red-100);
+  margin-top: 0.625rem;
+  display: none;
+}
+
+.lacak-error.lacak-visible { display: block; }
+
+/* ── Loading ────────────────────────────────────── */
+.lacak-loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 3.5rem;
+  color: var(--lacak-gray-400);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.lacak-loading.lacak-visible { display: flex; }
+
+.lacak-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--lacak-gray-200);
+  border-top-color: var(--lacak-blue-600);
+  border-radius: 50%;
+  animation: lacakSpin 0.75s linear infinite;
+}
+
+@keyframes lacakSpin { to { transform: rotate(360deg); } }
+
+@keyframes lacakFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Result Card ────────────────────────────────── */
+.lacak-result-card {
+  background: #fff;
+  border-radius: var(--lacak-radius-2xl);
+  border: 1px solid var(--lacak-gray-200);
+  box-shadow: var(--lacak-shadow-xl);
+  overflow: hidden;
+  max-width: 680px;
+  margin: 0 auto;
+  display: none;
+  animation: lacakFadeUp 0.4s ease forwards;
+}
+
+.lacak-result-card.lacak-visible { display: block; }
+
+/* Result header (gradient) */
+.lacak-result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.75rem;
+  background: linear-gradient(135deg, var(--lacak-blue-700) 0%, var(--lacak-blue-600) 60%, #4F46E5 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.lacak-result-header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.lacak-result-resi-label {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.lacak-result-resi {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+/* Status badge — di dalam header (warna putih) */
+.lacak-status-badge-header {
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--lacak-radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  white-space: nowrap;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Detail Grid ────────────────────────────────── */
+.lacak-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.lacak-detail-item {
+  padding: 1.1rem 1.75rem;
+  border-bottom: 1px solid var(--lacak-gray-100);
+}
+
+.lacak-detail-item:nth-child(odd) {
+  border-right: 1px solid var(--lacak-gray-100);
+}
+
+.lacak-detail-full {
+  grid-column: 1 / -1;
+  border-right: none !important;
+}
+
+.lacak-detail-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lacak-gray-400);
+  margin-bottom: 0.3rem;
+}
+
+.lacak-detail-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--lacak-gray-900);
+  line-height: 1.5;
+}
+
+/* ── Timeline ───────────────────────────────────── */
+.lacak-timeline-section {
+  padding: 1.5rem 1.75rem 1.75rem;
+  background: var(--lacak-gray-50);
+  border-top: 1px solid var(--lacak-gray-100);
+}
+
+.lacak-timeline-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--lacak-gray-400);
+  margin-bottom: 1.25rem;
+}
+
+.lacak-timeline { display: flex; flex-direction: column; }
+
+.lacak-timeline-step { display: flex; gap: 0.875rem; align-items: flex-start; }
+
+.lacak-timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.lacak-timeline-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  position: relative;
+  z-index: 1;
+  transition: var(--lacak-transition);
+}
+
+.lacak-timeline-step.lacak-step-pending .lacak-timeline-dot {
+  background: var(--lacak-gray-100);
+  color: var(--lacak-gray-300);
+  border: 2px solid var(--lacak-gray-200);
+}
+
+.lacak-timeline-step.lacak-step-done .lacak-timeline-dot {
+  background: var(--lacak-green-100);
+  color: var(--lacak-green-600);
+  border: 2px solid var(--lacak-green-600);
+  font-size: 0.9rem;
+}
+
+.lacak-timeline-step.lacak-step-active .lacak-timeline-dot {
+  background: var(--lacak-blue-600);
+  color: #fff;
+  border: 2.5px solid var(--lacak-blue-600);
+  box-shadow: 0 0 0 5px rgba(37,99,235,0.12);
+}
+
+.lacak-timeline-connector {
+  width: 2px;
+  height: 28px;
+  margin-top: 3px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.lacak-step-pending .lacak-timeline-connector { background: var(--lacak-gray-200); }
+.lacak-step-done    .lacak-timeline-connector { background: #4ade80; }
+.lacak-step-active  .lacak-timeline-connector { background: var(--lacak-gray-200); }
+
+.lacak-timeline-info {
+  padding: 0.45rem 0 0.875rem;
+  flex: 1;
+}
+
+.lacak-timeline-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.lacak-step-pending .lacak-timeline-label { color: var(--lacak-gray-400); }
+.lacak-step-done    .lacak-timeline-label { color: var(--lacak-gray-700); }
+.lacak-step-active  .lacak-timeline-label { color: var(--lacak-gray-900); }
+
+.lacak-timeline-now {
+  font-size: 0.72rem;
+  color: var(--lacak-blue-600);
+  font-weight: 700;
+  margin-top: 0.2rem;
+}
+
+/* ── Not Found ──────────────────────────────────── */
+.lacak-not-found {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 360px;
+  margin: 0 auto;
+  display: none;
+  animation: lacakFadeUp 0.35s ease;
+}
+
+.lacak-not-found.lacak-visible { display: block; }
+
+.lacak-not-found-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.lacak-not-found h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lacak-gray-700);
+  margin-bottom: 0.5rem;
+}
+
+.lacak-not-found p {
+  color: var(--lacak-gray-400);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.lacak-resi-format {
+  display: inline-block;
+  margin-top: 1rem;
+  background: var(--lacak-gray-100);
+  border: 1px solid var(--lacak-gray-200);
+  padding: 0.4rem 0.875rem;
+  border-radius: var(--lacak-radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--lacak-blue-600);
+  letter-spacing: 0.06em;
+}
+
+/* ── Toast ──────────────────────────────────────── */
+.lacak-toast {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--lacak-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--lacak-shadow-xl);
+  z-index: 9999;
+  animation: lacakFadeUp 0.3s ease;
+  max-width: 320px;
+  display: none;
+}
+
+.lacak-toast.lacak-visible   { display: block; }
+.lacak-toast.lacak-toast-ok  { background: #0f172a; color: #fff; }
+.lacak-toast.lacak-toast-err { background: var(--lacak-red-600); color: #fff; }
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 640px) {
+  .lacak-hero-title { font-size: 1.7rem; }
+  .lacak-detail-grid { grid-template-columns: 1fr; }
+  .lacak-detail-item:nth-child(odd) { border-right: none; }
+  .lacak-detail-full { grid-column: 1; }
+  .lacak-toast { left: 1rem; right: 1rem; max-width: unset; }
+}

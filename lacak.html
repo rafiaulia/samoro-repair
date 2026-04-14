@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Status Servis — RAS REPAIR</title>
+
+  <!--
+    ╔═══════════════════════════════════════════════╗
+    ║  Sesuaikan path Bootstrap & file project kamu ║
+    ╚═══════════════════════════════════════════════╝
+  -->
+  <!-- Bootstrap (sesuaikan versi yang kamu pakai) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- CSS lama (navbar/footer butuh ini) -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- CSS khusus halaman lacak — load TERAKHIR supaya prioritas lebih tinggi -->
+  <link rel="stylesheet" href="css/lacak.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="lacak-page">
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR — include dari file navbar.html kamu
+       (contoh jika pakai fetch/include statis)
+       ═══════════════════════════════════════════ -->
+  <!--
+    Jika kamu inject navbar via JS (misal loadComponent),
+    biarkan div ini — isinya otomatis diisi script.
+    Kalau pakai cara lain, sesuaikan.
+  -->
+  <div id="navbar-placeholder"></div>
+
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════ -->
+  <main>
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="lacak-hero">
+        <span class="lacak-hero-badge">🔍 Tracking Servis</span>
+        <h1 class="lacak-hero-title">
+          Cek Status <span class="lacak-accent">Servis</span> Kamu
+        </h1>
+        <p class="lacak-hero-desc">
+          Masukkan nomor resi yang kamu terima saat mengumpulkan perangkat.
+          Kami akan menampilkan perkembangan servis secara real-time.
+        </p>
+      </section>
+
+      <!-- Search Card -->
+      <div class="lacak-search-card">
+        <p class="lacak-search-label">Masukkan Nomor Resi</p>
+
+        <div class="d-flex gap-2">
+          <input
+            type="text"
+            id="lacak-input-resi"
+            class="lacak-search-input"
+            placeholder="SAM-12345678"
+            maxlength="12"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button
+            id="lacak-btn-cari"
+            class="lacak-search-btn"
+            onclick="lacakCariOrder()"
+          >
+            Lacak
+          </button>
+        </div>
+
+        <p id="lacak-msg-error" class="lacak-error"></p>
+      </div>
+
+      <!-- Loading -->
+      <div id="lacak-loading" class="lacak-loading">
+        <div class="lacak-spinner"></div>
+        <p>Mencari data servis...</p>
+      </div>
+
+      <!-- ─────────────────────────────────────────
+           RESULT CARD
+           ───────────────────────────────────────── -->
+      <div id="lacak-result-card" class="lacak-result-card">
+
+        <!-- Header gradient -->
+        <div class="lacak-result-header">
+          <div>
+            <p class="lacak-result-resi-label">Nomor Resi</p>
+            <h2 id="lacak-val-resi" class="lacak-result-resi"></h2>
+          </div>
+          <span id="lacak-val-status-badge" class="lacak-status-badge-header"></span>
+        </div>
+
+        <!-- Detail info -->
+        <div class="lacak-detail-grid">
+          <div class="lacak-detail-item">
+            <p class="lacak-detail-label">Nama Customer</p>
+            <p id="lacak-val-nama" class="lacak-detail-value"></p>
+          </div>
+          <div class="lacak-detail-item">
+            <p class="lacak-detail-label">Perangkat</p>
+            <p id="lacak-val-device" class="lacak-detail-value"></p>
+          </div>
+          <div class="lacak-detail-item">
+            <p class="lacak-detail-label">Jenis Layanan</p>
+            <p id="lacak-val-layanan" class="lacak-detail-value"></p>
+          </div>
+          <div class="lacak-detail-item lacak-detail-full">
+            <p class="lacak-detail-label">Keluhan / Kerusakan</p>
+            <p id="lacak-val-keluhan" class="lacak-detail-value"></p>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="lacak-timeline-section">
+          <p class="lacak-timeline-title">Progress Perbaikan</p>
+          <div id="lacak-timeline" class="lacak-timeline"></div>
+        </div>
+
+      </div><!-- /lacak-result-card -->
+
+      <!-- ─────────────────────────────────────────
+           NOT FOUND
+           ───────────────────────────────────────── -->
+      <div id="lacak-not-found" class="lacak-not-found">
+        <span class="lacak-not-found-icon">🔍</span>
+        <h3>Resi Tidak Ditemukan</h3>
+        <p>
+          Kami tidak dapat menemukan order dengan resi tersebut.<br>
+          Pastikan nomor resi yang kamu masukkan sudah benar.
+        </p>
+        <span class="lacak-resi-format">SAM-XXXXXXXX</span>
+      </div>
+
+    </div><!-- /container -->
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER — include dari file footer.html kamu
+       ═══════════════════════════════════════════ -->
+  <div id="footer-placeholder"></div>
+
+
+  <!-- Toast -->
+  <div id="lacak-toast" class="lacak-toast"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script lama (berisi inject navbar/footer) -->
+  <script src="js/scripts.js"></script>
+  <script src="js/custom.js"></script>
+  <!-- Script khusus lacak — load TERAKHIR -->
+  <script src="js/lacak.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — RAS REPAIR</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- CSS lama -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- CSS admin — load TERAKHIR -->
+  <link rel="stylesheet" href="css/admin.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="adm-page">
+
+  <!-- ════════════════════════════════════════
+       LOGIN SECTION
+       Tampil saat belum login
+       ════════════════════════════════════════ -->
+  <div id="adm-login-section">
+    <div class="adm-login-wrap">
+      <div class="adm-login-card">
+
+        <div class="adm-login-logo">
+          <div class="adm-login-icon">🔧</div>
+          <p class="adm-login-title">RAS REPAIR</p>
+          <p class="adm-login-sub">Admin Dashboard</p>
+        </div>
+
+        <div class="adm-login-divider"></div>
+
+        <form onsubmit="admLogin(event)" novalidate>
+          <div class="mb-3">
+            <label class="adm-label" for="adm-email">Email Admin</label>
+            <input type="email" id="adm-email" class="adm-input"
+              placeholder="admin@rasrepair.com" autocomplete="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="adm-label" for="adm-password">Password</label>
+            <input type="password" id="adm-password" class="adm-input"
+              placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+
+          <p id="adm-login-error" class="adm-error mb-3"></p>
+
+          <button type="submit" id="adm-login-btn" class="adm-btn adm-btn-primary adm-btn-full">
+            Masuk ke Dashboard
+          </button>
+        </form>
+
+        <a href="lacak.html" class="adm-back-link">← Ke Halaman Tracking</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       DASHBOARD SECTION
+       Tampil setelah login berhasil
+       ════════════════════════════════════════ -->
+  <div id="adm-dashboard-section" style="display:none;">
+
+    <!--
+      NAVBAR — inject via scripts.js / custom.js kamu
+      Sesuaikan dengan cara include navbar yang kamu pakai
+    -->
+    <div id="navbar-placeholder"></div>
+
+    <main class="py-4 pb-5">
+      <div class="container">
+
+        <!-- Info admin & tombol keluar -->
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+          <div>
+            <h5 class="fw-bold mb-0" style="font-family:'Outfit',sans-serif; font-size:1.15rem;">
+              Dashboard Admin
+            </h5>
+            <small id="adm-info-email" style="color:var(--adm-gray-400); font-size:0.8rem;"></small>
+          </div>
+          <button onclick="admLogout()" class="adm-btn adm-btn-ghost adm-btn-sm">
+            Keluar
+          </button>
+        </div>
+
+        <!-- ──────────────────────────────────
+             STATISTIK
+             ────────────────────────────────── -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md">
+            <div class="adm-stat-card">
+              <p class="adm-stat-label">Total</p>
+              <h3 class="adm-stat-val" id="adm-stat-total">—</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="adm-stat-card">
+              <p class="adm-stat-label">Masuk</p>
+              <h3 class="adm-stat-val" id="adm-stat-masuk" style="color:var(--adm-blue-600)">—</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="adm-stat-card">
+              <p class="adm-stat-label">Proses</p>
+              <h3 class="adm-stat-val" id="adm-stat-proses" style="color:var(--adm-yellow-600)">—</h3>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="adm-stat-card">
+              <p class="adm-stat-label">Siap Ambil</p>
+              <h3 class="adm-stat-val" id="adm-stat-siap" style="color:var(--adm-purple-600)">—</h3>
+            </div>
+          </div>
+          <div class="col-12 col-md">
+            <div class="adm-stat-card">
+              <p class="adm-stat-label">Selesai</p>
+              <h3 class="adm-stat-val" id="adm-stat-selesai" style="color:var(--adm-green-600)">—</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- ──────────────────────────────────
+             FORM TAMBAH / EDIT ORDER
+             ────────────────────────────────── -->
+        <div class="adm-card" id="adm-form-card">
+          <div class="adm-card-header">
+            <h2 class="adm-card-title" id="adm-form-title">Tambah Order Baru</h2>
+            <button id="adm-cancel-btn" class="adm-btn adm-btn-ghost adm-btn-sm"
+              onclick="admBatalEdit()" style="display:none;">
+              ✕ Batal Edit
+            </button>
+          </div>
+
+          <form id="adm-order-form" onsubmit="admSubmitOrder(event)" novalidate>
+            <input type="hidden" id="adm-edit-id">
+
+            <div class="row g-3 mb-3">
+
+              <!-- Resi -->
+              <div class="col-md-6">
+                <label class="adm-label">Nomor Resi</label>
+                <div class="d-flex gap-2">
+                  <input type="text" id="adm-resi" class="adm-input adm-input-resi"
+                    placeholder="Klik Generate →" readonly>
+                  <button type="button" class="adm-btn adm-btn-secondary"
+                    onclick="admGenerateResi()" title="Generate resi baru">
+                    🎲 Generate
+                  </button>
+                </div>
+              </div>
+
+              <!-- Nama Customer -->
+              <div class="col-md-6">
+                <label class="adm-label" for="adm-nama">
+                  Nama Customer <span class="text-danger">*</span>
+                </label>
+                <input type="text" id="adm-nama" class="adm-input"
+                  placeholder="Contoh: Budi Santoso" required>
+              </div>
+
+              <!-- Nama Perangkat -->
+              <div class="col-md-6">
+                <label class="adm-label" for="adm-device">
+                  Nama Perangkat <span class="text-danger">*</span>
+                </label>
+                <input type="text" id="adm-device" class="adm-input"
+                  placeholder="Contoh: Samsung Galaxy S23" required>
+              </div>
+
+              <!-- Jenis Layanan -->
+              <div class="col-md-6">
+                <label class="adm-label" for="adm-layanan">
+                  Jenis Layanan <span class="text-danger">*</span>
+                </label>
+                <input type="text" id="adm-layanan" class="adm-input"
+                  placeholder="Contoh: Ganti LCD, Servis Baterai" required>
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-6">
+                <label class="adm-label" for="adm-status">Status Order</label>
+                <select id="adm-status" class="adm-input">
+                  <option value="masuk">Masuk</option>
+                  <option value="proses perbaikan">Proses Perbaikan</option>
+                  <option value="siap diambil">Siap Diambil</option>
+                  <option value="selesai">Selesai</option>
+                </select>
+              </div>
+
+              <!-- Keluhan -->
+              <div class="col-12">
+                <label class="adm-label" for="adm-keluhan">
+                  Keluhan / Deskripsi Kerusakan <span class="text-danger">*</span>
+                </label>
+                <textarea id="adm-keluhan" class="adm-input"
+                  placeholder="Deskripsikan kerusakan atau keluhan perangkat..." required></textarea>
+              </div>
+
+            </div><!-- /row -->
+
+            <p id="adm-form-error" class="adm-error mb-3"></p>
+
+            <button type="submit" id="adm-submit-btn" class="adm-btn adm-btn-primary">
+              Simpan Order
+            </button>
+
+          </form>
+        </div>
+
+
+        <!-- ──────────────────────────────────
+             TABEL ORDER
+             ────────────────────────────────── -->
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <h2 class="adm-card-title">Daftar Order</h2>
+            <div class="d-flex gap-2 flex-wrap">
+              <input type="text" id="adm-search" class="adm-input"
+                style="max-width:220px; padding:0.45rem 0.75rem; font-size:0.82rem;"
+                placeholder="🔍 Cari resi, nama, perangkat..."
+                oninput="admFilterTabel()" autocomplete="off">
+              <button class="adm-btn adm-btn-secondary adm-btn-sm"
+                onclick="admMuatOrder()" title="Refresh">
+                ↺ Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- Loading -->
+          <div id="adm-tbl-loading" class="adm-loading adm-visible">
+            <div class="adm-spinner"></div>
+            <p>Memuat data...</p>
+          </div>
+
+          <!-- Table -->
+          <div id="adm-tbl-wrap" class="adm-table-wrap" style="display:none;">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th>No. Resi</th>
+                  <th>Customer</th>
+                  <th>Perangkat</th>
+                  <th>Layanan</th>
+                  <th>Status</th>
+                  <th>Tgl Masuk</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adm-tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Empty state -->
+          <div id="adm-tbl-empty" class="adm-empty" style="display:none;">
+            <div style="font-size:2.5rem; margin-bottom:0.75rem;">📋</div>
+            <p>Belum ada data order.</p>
+            <p style="font-size:0.8rem; color:var(--adm-gray-300); margin-top:0.25rem;">
+              Tambah order pertama lewat form di atas.
+            </p>
+          </div>
+
+        </div>
+
+      </div><!-- /container -->
+    </main>
+
+    <!-- Footer inject -->
+    <div id="footer-placeholder"></div>
+
+  </div><!-- /adm-dashboard-section -->
+
+
+  <!-- Toast -->
+  <div id="adm-toast" class="adm-toast"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script lama -->
+  <script src="js/scripts.js"></script>
+  <script src="js/custom.js"></script>
+  <!-- Script admin — load TERAKHIR -->
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

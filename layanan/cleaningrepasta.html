@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Rafiaja Store</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/png" href="../assets/ico/favicon.ico">
+  <!-- Custom Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/custom.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+
+
+
+
+</head>
+<div id="navbar-placeholder"></div>
+
+
+
+<!-- Navigation-->
+
+<script>
+  document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+    const toggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    dropdown.addEventListener('show.bs.dropdown', function () {
+      menu.classList.add('show');
+    });
+
+    dropdown.addEventListener('hide.bs.dropdown', function (e) {
+      e.preventDefault(); // cegah hide langsung
+      menu.classList.remove('show');
+      setTimeout(() => {
+        dropdown.classList.remove('show');
+      }, 300); // tunggu transisi selesai
+    });
+  });
+</script>
+
+
+<div class="inul-service-wrapper">
+
+  <section class="inul-service-header">
+    <div class="inul-service-title-wrapper">
+      <span class="inul-service-icon">
+        <i class="bi bi-fan"></i>
+      </span>
+      <h1 class="inul-service-title">Cleaning & Repasta</h1>
+    </div>
+
+    <p class="inul-service-desc">
+      Layanan pembersihan dan penggantian thermal paste
+      untuk menjaga suhu tetap stabil dan performa optimal.
+    </p>
+  </section>
+
+  <!-- Yang Didapat -->
+  <section class="inul-service-card">
+    <h2 class="inul-section-title">Yang Kamu Dapatkan</h2>
+    <ul class="inul-service-list">
+      <li>Pembersihan debu pada kipas & heatsink</li>
+      <li>Penggantian thermal paste CPU</li>
+      <li>Pembersihan bagian dalam laptop / PC</li>
+      <li>Perakitan ulang dengan rapi</li>
+      
+    </ul>
+  </section>
+
+  <!-- Kapan Perlu -->
+  <section class="inul-service-card">
+    <h2 class="inul-section-title">Kapan Perlu Cleaning & Repasta?</h2>
+    <ul class="inul-service-list">
+      <li>Laptop cepat panas atau sering overheat</li>
+      <li>Kipas berisik atau berdebu</li>
+      <li>Performa menurun saat digunakan berat</li>
+      <li>Sudah lebih dari 6–12 bulan tidak dibersihkan</li>
+    </ul>
+  </section>
+
+  <!-- Alur -->
+  <section class="inul-service-card">
+    <h2 class="inul-section-title">Alur Pengerjaan</h2>
+    <ol class="inul-service-flow">
+      <li>Pengecekan awal kondisi perangkat</li>
+      <li>Pembongkaran unit</li>
+      <li>Pembersihan debu & kipas</li>
+      <li>Penggantian thermal paste</li>
+      <li>Perakitan ulang & serah terima</li>
+    </ol>
+  </section>
+
+  <!-- Harga -->
+  <section class="inul-service-card inul-highlight">
+    <h2 class="inul-section-title">Harga Jasa</h2>
+
+    <div class="inul-price-list">
+      <div class="inul-price-item">
+        <span>
+          Cleaning & Repasta (Custom)
+          <span class="popup-wrapper">
+            <i class="bi bi-question-circle popup-icon"></i>
+
+            <div class="popup-card">
+              Layanan ini ditujukan untuk pelanggan yang membawa
+              thermal paste sendiri.
+            </div>
+          </span>
+        </span>
+        <strong>Rp50.000</strong>
+      </div>
+
+
+      <div class="inul-price-item">
+
+        <span>Cleaning & Repasta</span>
+        <strong>Rp60.000</strong>
+      </div>
+
+    </div>
+
+    <p class="inul-service-note">
+      Menggunakan thermal paste standar berkualitas.
+      Thermal paste premium tersedia atas permintaan.
+    </p>
+  </section>
+
+  <!-- Syarat & Catatan -->
+<section class="inul-service-card">
+  <h2 class="inul-section-title">Ketentuan & Catatan</h2>
+  <ul class="inul-service-list">
+    <li>Tidak semua laptop mudah dibongkar (tergantung model dan desain pabrikan)</li>
+    <li>Risiko baut aus, drat rusak, atau klip casing rapuh akan dikonfirmasi terlebih dahulu sebelum pengerjaan</li>
+    <li>Tindakan pembongkaran atau pembukaan segel dapat membatalkan garansi resmi dari pabrikan</li>
+    <li>Layanan cleaning & repasta disarankan dilakukan setelah masa garansi perangkat berakhir</li>
+    <li>Tidak membuka segel atau melakukan pembongkaran apabila pelanggan tidak memberikan izin</li>
+    <li>Performa dan suhu setelah layanan dapat berbeda-beda tergantung kondisi dan spesifikasi perangkat</li>
+    <li>Pelanggan dapat memilih menggunakan thermal paste standar atau membawa thermal paste sendiri (custom)</li>
+  </ul>
+</section>
+
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>// load navbar
+  fetch("/navbar.html")
+    .then(res => res.text())
+    .then(data => {
+      const nav = document.getElementById("navbar-placeholder");
+      if (nav) nav.innerHTML = data;
+    });
+
+  // load footer
+  fetch("/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      const foot = document.getElementById("footer-placeholder");
+      if (foot) foot.innerHTML = data;
+    });
+</script>
+
+<script>
+  document.querySelectorAll('.popup-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const wrapper = icon.closest('.popup-wrapper');
+      wrapper.classList.toggle('active');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document
+      .querySelectorAll('.popup-wrapper.active')
+      .forEach(w => w.classList.remove('active'));
+  });
+</script>
+
+<script src="js/custom.js"></script>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script src="js/custom.js"></script>
+
+</html>

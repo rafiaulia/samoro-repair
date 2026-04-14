@@ -1,0 +1,467 @@
+/* ================================================
+   RAS-REPAIR — admin.css
+   Semua class pakai prefix "adm-" supaya tidak
+   bentrok dengan styles.css / custom.css yang lama.
+   Bootstrap dipakai untuk layout & utilitas dasar.
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&display=swap');
+
+/* ── Variables ──────────────────────────────────── */
+:root {
+  --adm-blue-700 : #1D4ED8;
+  --adm-blue-600 : #2563EB;
+  --adm-blue-500 : #3B82F6;
+  --adm-blue-200 : #BFDBFE;
+  --adm-blue-100 : #DBEAFE;
+  --adm-blue-50  : #EFF6FF;
+
+  --adm-gray-900 : #0F172A;
+  --adm-gray-800 : #1E293B;
+  --adm-gray-700 : #334155;
+  --adm-gray-600 : #475569;
+  --adm-gray-500 : #64748B;
+  --adm-gray-400 : #94A3B8;
+  --adm-gray-300 : #CBD5E1;
+  --adm-gray-200 : #E2E8F0;
+  --adm-gray-100 : #F1F5F9;
+  --adm-gray-50  : #F8FAFC;
+
+  --adm-green-600 : #16A34A;
+  --adm-green-100 : #DCFCE7;
+  --adm-green-50  : #F0FDF4;
+
+  --adm-yellow-600: #CA8A04;
+  --adm-yellow-100: #FEF9C3;
+  --adm-yellow-50 : #FEFCE8;
+
+  --adm-purple-600: #9333EA;
+  --adm-purple-100: #F3E8FF;
+  --adm-purple-50 : #FAF5FF;
+
+  --adm-red-600  : #DC2626;
+  --adm-red-100  : #FEE2E2;
+  --adm-red-50   : #FFF1F2;
+
+  --adm-shadow-xs : 0 1px 2px rgba(0,0,0,0.05);
+  --adm-shadow-sm : 0 1px 3px rgba(0,0,0,0.08);
+  --adm-shadow-md : 0 4px 6px -1px rgba(0,0,0,0.07);
+  --adm-shadow-lg : 0 10px 15px -3px rgba(0,0,0,0.07);
+  --adm-shadow-xl : 0 20px 25px -5px rgba(0,0,0,0.08);
+  --adm-shadow-blue: 0 4px 14px rgba(37,99,235,0.28);
+
+  --adm-radius-xs  : 4px;
+  --adm-radius-sm  : 8px;
+  --adm-radius-md  : 12px;
+  --adm-radius-lg  : 16px;
+  --adm-radius-xl  : 20px;
+  --adm-radius-2xl : 28px;
+  --adm-radius-full: 9999px;
+
+  --adm-transition: all 0.18s ease;
+}
+
+/* ── Page ───────────────────────────────────────── */
+.adm-page { background: var(--adm-gray-50); min-height: 100vh; }
+
+/* ================================================
+   LOGIN
+   ================================================ */
+.adm-login-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: var(--adm-gray-50);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(37,99,235,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(99,102,241,0.04) 0%, transparent 50%);
+}
+
+.adm-login-card {
+  background: #fff;
+  border-radius: var(--adm-radius-2xl);
+  border: 1px solid var(--adm-gray-200);
+  box-shadow: var(--adm-shadow-xl);
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 420px;
+  animation: admFadeUp 0.45s ease;
+}
+
+.adm-login-logo { text-align: center; margin-bottom: 2rem; }
+
+.adm-login-icon {
+  font-size: 2.25rem;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  background: var(--adm-blue-50);
+  border: 1.5px solid var(--adm-blue-200);
+  border-radius: var(--adm-radius-lg);
+  margin: 0 auto 0.875rem;
+}
+
+.adm-login-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--adm-gray-900);
+}
+
+.adm-login-sub {
+  font-size: 0.78rem;
+  color: var(--adm-gray-400);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+.adm-login-divider {
+  height: 1px;
+  background: var(--adm-gray-100);
+  margin-bottom: 1.5rem;
+}
+
+.adm-back-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--adm-gray-400);
+  font-weight: 500;
+  transition: var(--adm-transition);
+  text-decoration: none;
+}
+.adm-back-link:hover { color: var(--adm-blue-600); }
+
+/* ── Form Elements ──────────────────────────────── */
+.adm-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--adm-gray-700);
+  margin-bottom: 0.375rem;
+  display: block;
+}
+
+.adm-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--adm-gray-200);
+  border-radius: var(--adm-radius-sm);
+  font-size: 0.875rem;
+  color: var(--adm-gray-900);
+  background: #fff;
+  transition: var(--adm-transition);
+  outline: none;
+  line-height: 1.5;
+}
+
+.adm-input::placeholder { color: var(--adm-gray-300); }
+
+.adm-input:focus {
+  border-color: var(--adm-blue-500);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.adm-input[readonly] {
+  background: var(--adm-gray-50);
+  color: var(--adm-gray-500);
+  cursor: default;
+}
+.adm-input[readonly]:focus {
+  box-shadow: none;
+  border-color: var(--adm-gray-200);
+}
+
+.adm-input-resi {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+textarea.adm-input {
+  min-height: 90px;
+  resize: vertical;
+}
+
+select.adm-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+}
+
+/* ── Buttons ────────────────────────────────────── */
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--adm-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: var(--adm-transition);
+  white-space: nowrap;
+  line-height: 1.4;
+  background: none;
+}
+
+.adm-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.adm-btn-primary {
+  background: var(--adm-blue-600);
+  color: #fff;
+  border-color: var(--adm-blue-600);
+}
+.adm-btn-primary:hover:not(:disabled) {
+  background: var(--adm-blue-700);
+  transform: translateY(-1px);
+  box-shadow: var(--adm-shadow-blue);
+}
+
+.adm-btn-secondary {
+  background: #fff;
+  color: var(--adm-gray-700);
+  border-color: var(--adm-gray-200);
+}
+.adm-btn-secondary:hover:not(:disabled) {
+  background: var(--adm-gray-50);
+  border-color: var(--adm-gray-300);
+}
+
+.adm-btn-ghost {
+  background: transparent;
+  color: var(--adm-gray-500);
+  border-color: var(--adm-gray-200);
+}
+.adm-btn-ghost:hover:not(:disabled) {
+  background: var(--adm-gray-100);
+  color: var(--adm-gray-700);
+}
+
+.adm-btn-danger {
+  background: var(--adm-red-50);
+  color: var(--adm-red-600);
+  border-color: var(--adm-red-100);
+}
+.adm-btn-danger:hover:not(:disabled) {
+  background: var(--adm-red-600);
+  color: #fff;
+}
+
+.adm-btn-full { width: 100%; padding: 0.75rem 1.5rem; font-size: 0.95rem; }
+.adm-btn-sm   { padding: 0.3rem 0.65rem; font-size: 0.78rem; border-radius: var(--adm-radius-xs); }
+
+/* ── Error / Toast ──────────────────────────────── */
+.adm-error {
+  color: var(--adm-red-600);
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--adm-red-50);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--adm-radius-sm);
+  border: 1px solid var(--adm-red-100);
+  display: none;
+}
+.adm-error.adm-visible { display: block; }
+
+.adm-toast {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--adm-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--adm-shadow-xl);
+  z-index: 9999;
+  max-width: 320px;
+  display: none;
+  animation: admFadeUp 0.3s ease;
+}
+.adm-toast.adm-visible    { display: block; }
+.adm-toast.adm-toast-ok  { background: var(--adm-gray-900); color: #fff; }
+.adm-toast.adm-toast-err { background: var(--adm-red-600);  color: #fff; }
+
+/* ── Cards ──────────────────────────────────────── */
+.adm-card {
+  background: #fff;
+  border-radius: var(--adm-radius-xl);
+  border: 1px solid var(--adm-gray-200);
+  box-shadow: var(--adm-shadow-sm);
+  padding: 1.625rem;
+  margin-bottom: 1.5rem;
+}
+
+.adm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.375rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--adm-gray-100);
+}
+
+.adm-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--adm-gray-900);
+  margin: 0;
+}
+
+/* ── Stats ──────────────────────────────────────── */
+.adm-stat-card {
+  background: #fff;
+  border-radius: var(--adm-radius-md);
+  border: 1px solid var(--adm-gray-200);
+  padding: 1rem 1.125rem;
+  box-shadow: var(--adm-shadow-xs);
+  transition: var(--adm-transition);
+}
+.adm-stat-card:hover { box-shadow: var(--adm-shadow-sm); transform: translateY(-1px); }
+
+.adm-stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--adm-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.375rem;
+}
+
+.adm-stat-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.875rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--adm-blue-600);
+}
+
+/* ── Resi code di tabel ─────────────────────────── */
+.adm-resi-code {
+  font-family: 'Outfit', sans-serif;
+  background: var(--adm-blue-50);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--adm-radius-xs);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--adm-blue-700);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--adm-blue-100);
+}
+
+/* ── Tabel ──────────────────────────────────────── */
+.adm-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--adm-radius-md);
+  border: 1px solid var(--adm-gray-100);
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 720px;
+}
+
+.adm-table thead tr { background: var(--adm-gray-50); }
+
+.adm-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--adm-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  border-bottom: 1.5px solid var(--adm-gray-200);
+}
+
+.adm-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--adm-gray-100);
+  vertical-align: middle;
+  color: var(--adm-gray-700);
+}
+
+.adm-table tbody tr { transition: background 0.12s; }
+.adm-table tbody tr:hover { background: var(--adm-gray-50); }
+.adm-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── Status dropdown di tabel ───────────────────── */
+.adm-status-select {
+  padding: 0.3rem 0.625rem;
+  border-radius: var(--adm-radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1.5px solid;
+  cursor: pointer;
+  appearance: none;
+  min-width: 148px;
+  text-align: center;
+  font-family: inherit;
+  transition: var(--adm-transition);
+  background-image: none;
+}
+.adm-status-select:focus { outline: none; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+
+.adm-status-blue   { background: var(--adm-blue-50);   color: var(--adm-blue-700);   border-color: var(--adm-blue-200); }
+.adm-status-yellow { background: var(--adm-yellow-50); color: var(--adm-yellow-600); border-color: var(--adm-yellow-100); }
+.adm-status-purple { background: var(--adm-purple-50); color: var(--adm-purple-600); border-color: var(--adm-purple-100); }
+.adm-status-green  { background: var(--adm-green-50);  color: var(--adm-green-600);  border-color: var(--adm-green-100); }
+
+/* ── Empty & Loading ────────────────────────────── */
+.adm-empty {
+  text-align: center;
+  padding: 3.5rem;
+  color: var(--adm-gray-400);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.adm-loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 3.5rem;
+  color: var(--adm-gray-400);
+  font-size: 0.875rem;
+}
+.adm-loading.adm-visible { display: flex; }
+
+.adm-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--adm-gray-200);
+  border-top-color: var(--adm-blue-600);
+  border-radius: 50%;
+  animation: admSpin 0.75s linear infinite;
+}
+
+@keyframes admSpin    { to { transform: rotate(360deg); } }
+@keyframes admFadeUp  {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 640px) {
+  .adm-login-card { padding: 1.75rem 1.5rem; }
+  .adm-toast { left: 1rem; right: 1rem; max-width: unset; }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Rafiaja Store</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/png" href="/assets/ico/favicon.ico">
+  <!-- Custom Google font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+
+
+
+
+
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="css/styles.css" rel="stylesheet" />
+  <link href="css/custom.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
+</head>
+
+
+
+<div id="navbar-placeholder"></div>
+<h2 class="layanan-title mt-5">Konsultasi Ras Repair</h2>
+<div class="skras-container">
+  <p class="layanan-subtitle mb-5"></p>
+
+  <div class="consul-container">
+    <h2 class="consul-title"></h2>
+    <p class="consul-subtitle">
+      Ada pertanyaan seputar layanan atau ingin konsultasi perangkatmu?
+      Hubungi kami langsung melalui WhatsApp, cepat dan mudah.
+    </p>
+
+    <a href="https://wa.me/6281234567890" target="_blank" class="consul-btn">
+      <i class="bi bi-whatsapp consul-btn-icon"></i>
+      Chat Sekarang
+    </a>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.faq-card');
+
+    cards.forEach(card => {
+      const question = card.querySelector('.faq-question');
+      const icon = card.querySelector('.icon');
+
+      question.addEventListener('click', () => {
+        cards.forEach(other => {
+          if (other !== card) {
+            other.classList.remove('active');
+            other.querySelector('.icon').textContent = '+';
+          }
+        });
+
+        card.classList.toggle('active');
+        icon.textContent = card.classList.contains('active') ? '-' : '+';
+      });
+    });
+  });
+</script>
+
+</main>
+<div id="footer-placeholder"></div>
+<script>
+  // load navbar
+  fetch("/navbar.html")
+    .then(res => res.text())
+    .then(data => {
+      const nav = document.getElementById("navbar-placeholder");
+      if (nav) nav.innerHTML = data;
+    });
+
+  // load footer
+  fetch("/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      const foot = document.getElementById("footer-placeholder");
+      if (foot) foot.innerHTML = data;
+    });
+
+</script>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<script src="js/custom.js"></script>
+
+
+</body>
+
+</html>
