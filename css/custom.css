@@ -374,6 +374,19 @@ a.raf-btn {
   }
 }
 
+/* Small phones: avoid subtle horizontal shift from min-width overflow */
+@media (max-width: 420px) {
+  .raf-container {
+    width: 100%;
+  }
+
+  .raf-left,
+  .raf-right {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 /* ============================================
    LAYANAN SECTION
    ============================================ */

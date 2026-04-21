@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Pesanan — SAMORO REPAIR</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- CSS lama -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/biaya.css">
+  <!-- CSS pesanan — load TERAKHIR -->
+  <link rel="stylesheet" href="css/pesanan.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="pes-page">
+
+  <!-- Navbar inject -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="py-4 pb-5">
+    <div class="container">
+
+      <!-- Page Header -->
+      <div class="pes-page-header">
+        <div>
+          <h1 class="pes-page-title">Daftar Pesanan</h1>
+          <p class="pes-page-sub">Kelola semua order servis masuk</p>
+        </div>
+        <a href="admin.html" class="pes-btn pes-btn-secondary" style="font-size:0.82rem;">
+          ← Kembali ke Dashboard
+        </a>
+      </div>
+
+      <!-- Card utama -->
+      <div class="pes-card">
+
+        <!-- Tab Bar -->
+        <div class="pes-tab-bar" id="pes-tab-bar">
+          <button class="pes-tab pes-tab-active" data-filter="semua" onclick="pesPilihTab(this)">
+            Semua <span class="pes-tab-badge" id="pes-badge-semua">0</span>
+          </button>
+          <button class="pes-tab" data-filter="masuk" onclick="pesPilihTab(this)">
+            Masuk <span class="pes-tab-badge" id="pes-badge-masuk">0</span>
+          </button>
+          <button class="pes-tab" data-filter="proses perbaikan" onclick="pesPilihTab(this)">
+            Proses Perbaikan <span class="pes-tab-badge" id="pes-badge-proses">0</span>
+          </button>
+          <button class="pes-tab" data-filter="siap diambil" onclick="pesPilihTab(this)">
+            Siap Diambil <span class="pes-tab-badge" id="pes-badge-siap">0</span>
+          </button>
+          <button class="pes-tab" data-filter="selesai" onclick="pesPilihTab(this)">
+            Selesai <span class="pes-tab-badge" id="pes-badge-selesai">0</span>
+          </button>
+        </div>
+
+        <!-- Search & Info -->
+        <div class="pes-search-wrap">
+          <input
+            type="text"
+            id="pes-search"
+            class="pes-search-input"
+            placeholder="🔍 Cari resi, nama, perangkat..."
+            oninput="pesFilter()"
+            autocomplete="off"
+          >
+          <span class="pes-result-info" id="pes-result-info"></span>
+          <button class="pes-btn pes-btn-secondary" style="font-size:0.8rem; padding:0.45rem 0.875rem;"
+            onclick="pesMuatOrder()">↺ Refresh</button>
+        </div>
+
+        <!-- Loading -->
+        <div id="pes-loading" class="pes-loading pes-visible">
+          <div class="pes-spinner"></div>
+          <p>Memuat data pesanan...</p>
+        </div>
+
+        <!-- Empty -->
+        <div id="pes-empty" class="pes-empty">
+          <span class="pes-empty-icon">📋</span>
+          <p style="font-weight:600; color:var(--pes-gray-600);">Tidak ada pesanan ditemukan</p>
+          <p style="font-size:0.8rem; margin-top:0.25rem;">Coba ganti filter atau kata kunci pencarian.</p>
+        </div>
+
+        <!-- Table -->
+        <div id="pes-table-wrap" class="pes-table-wrap" style="display:none;">
+          <table class="pes-table">
+            <thead>
+              <tr>
+                <th style="width:40px;">#</th>
+                <th>No. Resi</th>
+                <th>Customer</th>
+                <th>Perangkat</th>
+                <th>Layanan</th>
+                <th>Keluhan</th>
+                <th>Status</th>
+                <th>Tgl Masuk</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="pes-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pes-pagination" class="pes-pagination" style="display:none;">
+          <span class="pes-pagination-info" id="pes-pag-info"></span>
+          <div class="pes-pagination-btns" id="pes-pag-btns"></div>
+        </div>
+
+      </div><!-- /pes-card -->
+
+    </div>
+  </main>
+
+  <!-- Footer inject -->
+  <div id="footer-placeholder"></div>
+
+
+  <!-- ════════════════════════════════════════
+       MODAL EDIT ORDER
+       ════════════════════════════════════════ -->
+  <div id="pes-modal-overlay" class="pes-modal-overlay" onclick="pesTutupModal(event)">
+    <div class="pes-modal" id="pes-modal">
+
+      <div class="pes-modal-header">
+        <h2 class="pes-modal-title">✎ Edit Order</h2>
+        <button class="pes-modal-close" onclick="pesTutupModal()">✕</button>
+      </div>
+
+      <div class="pes-modal-body">
+        <form id="pes-edit-form" onsubmit="pesSubmitEdit(event)" novalidate>
+          <input type="hidden" id="pes-edit-id">
+
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="pes-label">Nomor Resi</label>
+              <input type="text" id="pes-edit-resi" class="pes-input" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="pes-label" for="pes-edit-nama">
+                Nama Customer <span class="text-danger">*</span>
+              </label>
+              <input type="text" id="pes-edit-nama" class="pes-input" required>
+            </div>
+            <div class="col-md-6">
+              <label class="pes-label" for="pes-edit-device">
+                Nama Perangkat <span class="text-danger">*</span>
+              </label>
+              <input type="text" id="pes-edit-device" class="pes-input" required>
+            </div>
+            <div class="col-md-6">
+              <label class="pes-label" for="pes-edit-layanan">
+                Jenis Layanan <span class="text-danger">*</span>
+              </label>
+              <input type="text" id="pes-edit-layanan" class="pes-input" required>
+            </div>
+            <div class="col-md-6">
+              <label class="pes-label" for="pes-edit-status">Status</label>
+              <select id="pes-edit-status" class="pes-input">
+                <option value="masuk">Masuk</option>
+                <option value="proses perbaikan">Proses Perbaikan</option>
+                <option value="siap diambil">Siap Diambil</option>
+                <option value="selesai">Selesai</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="pes-label" for="pes-edit-keluhan">
+                Keluhan <span class="text-danger">*</span>
+              </label>
+              <textarea id="pes-edit-keluhan" class="pes-input" required></textarea>
+            </div>
+          </div>
+
+          <p id="pes-edit-error" class="pes-error mt-3"></p>
+        </form>
+      </div>
+
+      <div class="pes-modal-footer">
+        <button class="pes-btn pes-btn-ghost" onclick="pesTutupModal()">Batal</button>
+        <button class="pes-btn pes-btn-primary" onclick="pesSubmitEdit(event)" id="pes-edit-save-btn">
+          Simpan Perubahan
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       MODAL NOTA
+       ════════════════════════════════════════ -->
+  <div id="pes-nota-overlay" class="pes-nota-overlay" onclick="pesTutupNota(event)">
+    <div class="pes-nota-modal">
+
+      <div class="pes-nota-wrap" id="pes-nota-wrap">
+        <div class="pes-nota-header">
+          <p class="pes-nota-brand">SAMORO REPAIR</p>
+          <p class="pes-nota-alamat">Kabunan RT6 RW1 Ngadiwarno Kec. Sukorejo Kab. Kendal 51363 Telp. 083162294652</p>
+          <p class="pes-nota-sub">Nota Servis</p>
+          <p class="pes-nota-sub" id="pes-nota-tgl"></p>
+        </div>
+
+        <div class="pes-nota-resi">
+          <p class="pes-nota-resi-label">No. Resi</p>
+          <p class="pes-nota-resi-val" id="pes-nota-resi"></p>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <div class="pes-nota-row">
+            <span class="pes-nota-key">Nama Customer</span>
+            <span class="pes-nota-val" id="pes-nota-nama"></span>
+          </div>
+          <div class="pes-nota-row">
+            <span class="pes-nota-key">Perangkat</span>
+            <span class="pes-nota-val" id="pes-nota-device"></span>
+          </div>
+          <div class="pes-nota-row">
+            <span class="pes-nota-key">Jenis Layanan</span>
+            <span class="pes-nota-val" id="pes-nota-layanan"></span>
+          </div>
+          <div class="pes-nota-row">
+            <span class="pes-nota-key">Keluhan</span>
+            <span class="pes-nota-val" id="pes-nota-keluhan" style="max-width:220px;"></span>
+          </div>
+          <div class="pes-nota-row">
+            <span class="pes-nota-key">Status</span>
+            <span class="pes-nota-val">
+              <span class="pes-nota-status" id="pes-nota-status"></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="pes-nota-footer">
+          <p>Simpan nota ini sebagai bukti pengumpulan perangkat.</p>
+          <p>Terima kasih telah mempercayakan servis Anda kepada kami!</p>
+        </div>
+      </div>
+
+      <div class="pes-nota-actions">
+        <button class="pes-btn pes-btn-ghost pes-btn-sm" onclick="pesTutupNota()">Tutup</button>
+        <button id="pes-nota-dl-btn" class="pes-btn pes-btn-secondary pes-btn-sm" onclick="pesDownloadNota()">
+          ⬇️ Download
+        </button>
+        <button class="pes-btn pes-btn-primary pes-btn-sm" onclick="window.print()">
+          🖨️ Cetak
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="pes-toast" class="pes-toast"></div>
+<!-- Modal Nota Biaya -->
+<div id="biaya-overlay" class="biaya-overlay" onclick="biayaTutupModal(event)">
+  <div class="biaya-modal">
+
+    <div class="biaya-modal-header">
+      <div>
+        <h2 class="biaya-modal-title">💰 Nota Biaya</h2>
+        <p class="biaya-modal-resi" id="biaya-modal-resi"></p>
+      </div>
+      <button class="biaya-modal-close" onclick="biayaTutupModal()">✕</button>
+    </div>
+
+    <div class="biaya-tab-wrap">
+      <button class="biaya-tab biaya-tab-active" data-tab="input" onclick="biayaPilihTab('input')">✏️ Input Biaya</button>
+      <button class="biaya-tab" data-tab="preview" onclick="biayaPilihTab('preview')">👁️ Preview Nota</button>
+    </div>
+
+    <div class="biaya-body">
+      <!-- INPUT SECTION -->
+      <div id="biaya-input-section">
+        <div class="biaya-item-header">
+          <span>Nama Item / Jasa</span>
+          <span>Qty</span>
+          <span>Harga Satuan</span>
+          <span></span>
+        </div>
+        <div id="biaya-items-wrap" class="biaya-items-wrap"></div>
+        <button class="biaya-add-btn" onclick="biayaTambahBaris()">+ Tambah Item</button>
+        <div class="biaya-total-wrap" style="margin-top:1rem;">
+          <span class="biaya-total-label">Total</span>
+          <span class="biaya-total-val" id="biaya-total-display">Rp 0</span>
+        </div>
+        <p id="biaya-error" class="biaya-error"></p>
+      </div>
+
+      <!-- PREVIEW SECTION -->
+      <div id="biaya-preview-section" style="display:none;">
+        <div id="biaya-preview-content" class="biaya-preview-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Footer Input -->
+    <div id="biaya-footer-input" class="biaya-modal-footer">
+      <button class="biaya-btn biaya-btn-ghost" onclick="biayaTutupModal()">Batal</button>
+      <button class="biaya-btn biaya-btn-primary" id="biaya-btn-simpan" onclick="biayaSimpan()">
+        Simpan & Preview →
+      </button>
+    </div>
+
+    <!-- Footer Preview -->
+    <div id="biaya-footer-preview" class="biaya-modal-footer" style="display:none;">
+      <button class="biaya-btn biaya-btn-ghost" onclick="biayaTutupModal()">Tutup</button>
+      <button class="biaya-btn biaya-btn-secondary" onclick="biayaPilihTab('input')">✏️ Edit</button>
+      <button class="biaya-btn biaya-btn-secondary" id="biaya-btn-download" onclick="biayaDownload()">⬇️ Download</button>
+      <button class="biaya-btn biaya-btn-primary" onclick="biayaCetak()">🖨️ Cetak</button>
+    </div>
+
+  </div>
+</div>
+<!-- Area print tersembunyi -->
+<div id="biaya-print-area" style="display:none;"></div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="js/biaya.js"></script>
+  <!-- Script pesanan — TERAKHIR -->
+  <script src="js/pesanan.js"></script>
+
+</body>
+</html>

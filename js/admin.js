@@ -39,7 +39,7 @@ const ADM_STATUS_COLORS = {
 };
 
 // Cache lokal data tabel
-let _admOrders = [];
+window._admOrders = [];  // dan semua referensi _admOrders → window._admOrders
 
 // ================================================
 // 🛠️  HELPER UTILITIES
@@ -228,7 +228,8 @@ async function admMuatOrder() {
     return;
   }
 
-  _admOrders = data || [];
+  // Sinkronkan cache lokal & global (dipakai oleh biaya.js)
+  _admOrders = window._admOrders = data || [];
   admRenderTabel(_admOrders);
   admUpdateStats(_admOrders);
 }
@@ -289,6 +290,8 @@ function admRenderTabel(orders) {
     onclick="admHapusOrder(${o.id}, '${admEscHtml(o.resi)}')">Hapus</button>
   <button class="adm-btn adm-btn-print adm-btn-sm"
     onclick="admCetakNota(${o.id})">🖨️</button>
+    <button class="adm-btn adm-btn-secondary adm-btn-sm"
+  onclick="biayaBukaModalById(${o.id})">💰</button>
 </div>
       </td>
     </tr>
@@ -300,13 +303,28 @@ function admRenderTabel(orders) {
  * @param {Array} orders
  */
 function admUpdateStats(orders) {
-  admSetTeks('adm-stat-total',  orders.length);
-  admSetTeks('adm-stat-masuk',  orders.filter(o => o.status === 'masuk').length);
-  admSetTeks('adm-stat-proses', orders.filter(o => o.status === 'proses perbaikan').length);
-  admSetTeks('adm-stat-siap',   orders.filter(o => o.status === 'siap diambil').length);
-  admSetTeks('adm-stat-selesai',orders.filter(o => o.status === 'selesai').length);
+  admSetTeks('adm-stat-total',   orders.length);
+  admSetTeks('adm-stat-masuk',   orders.filter(o => o.status === 'masuk').length);
+  admSetTeks('adm-stat-proses',  orders.filter(o => o.status === 'proses perbaikan').length);
+  admSetTeks('adm-stat-siap',    orders.filter(o => o.status === 'siap diambil').length);
+  admSetTeks('adm-stat-selesai', orders.filter(o => o.status === 'selesai').length);
 }
 
+// Buat stat card bisa diklik → ke pesanan.html dengan filter aktif
+document.querySelectorAll('.adm-stat-card').forEach(card => {
+  card.style.cursor = 'pointer';
+});
+
+document.getElementById('adm-stat-total')  ?.closest('.adm-stat-card')
+  .addEventListener('click', () => location.href = 'pesanan.html');
+document.getElementById('adm-stat-masuk')  ?.closest('.adm-stat-card')
+  .addEventListener('click', () => location.href = 'pesanan.html?filter=masuk');
+document.getElementById('adm-stat-proses') ?.closest('.adm-stat-card')
+  .addEventListener('click', () => location.href = 'pesanan.html?filter=proses+perbaikan');
+document.getElementById('adm-stat-siap')   ?.closest('.adm-stat-card')
+  .addEventListener('click', () => location.href = 'pesanan.html?filter=siap+diambil');
+document.getElementById('adm-stat-selesai')?.closest('.adm-stat-card')
+  .addEventListener('click', () => location.href = 'pesanan.html?filter=selesai');
 /**
  * Filter tabel berdasarkan pencarian
  */

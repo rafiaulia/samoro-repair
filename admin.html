@@ -15,6 +15,7 @@
   <!-- CSS lama -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/biaya.css">
   <!-- CSS admin — load TERAKHIR -->
   <link rel="stylesheet" href="css/admin.css">
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -341,12 +342,73 @@
 </div>
   <!-- Toast -->
   <div id="adm-toast" class="adm-toast"></div>
+<!-- Modal Nota Biaya -->
+<div id="biaya-overlay" class="biaya-overlay" onclick="biayaTutupModal(event)">
+  <div class="biaya-modal">
 
+    <div class="biaya-modal-header">
+      <div>
+        <h2 class="biaya-modal-title">💰 Nota Biaya</h2>
+        <p class="biaya-modal-resi" id="biaya-modal-resi"></p>
+      </div>
+      <button class="biaya-modal-close" onclick="biayaTutupModal()">✕</button>
+    </div>
+
+    <div class="biaya-tab-wrap">
+      <button class="biaya-tab biaya-tab-active" data-tab="input" onclick="biayaPilihTab('input')">✏️ Input Biaya</button>
+      <button class="biaya-tab" data-tab="preview" onclick="biayaPilihTab('preview')">👁️ Preview Nota</button>
+    </div>
+
+    <div class="biaya-body">
+      <!-- INPUT SECTION -->
+      <div id="biaya-input-section">
+        <div class="biaya-item-header">
+          <span>Nama Item / Jasa</span>
+          <span>Qty</span>
+          <span>Harga Satuan</span>
+          <span></span>
+        </div>
+        <div id="biaya-items-wrap" class="biaya-items-wrap"></div>
+        <button class="biaya-add-btn" onclick="biayaTambahBaris()">+ Tambah Item</button>
+        <div class="biaya-total-wrap" style="margin-top:1rem;">
+          <span class="biaya-total-label">Total</span>
+          <span class="biaya-total-val" id="biaya-total-display">Rp 0</span>
+        </div>
+        <p id="biaya-error" class="biaya-error"></p>
+      </div>
+
+      <!-- PREVIEW SECTION -->
+      <div id="biaya-preview-section" style="display:none;">
+        <div id="biaya-preview-content" class="biaya-preview-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Footer Input -->
+    <div id="biaya-footer-input" class="biaya-modal-footer">
+      <button class="biaya-btn biaya-btn-ghost" onclick="biayaTutupModal()">Batal</button>
+      <button class="biaya-btn biaya-btn-primary" id="biaya-btn-simpan" onclick="biayaSimpan()">
+        Simpan & Preview →
+      </button>
+    </div>
+
+    <!-- Footer Preview -->
+    <div id="biaya-footer-preview" class="biaya-modal-footer" style="display:none;">
+      <button class="biaya-btn biaya-btn-ghost" onclick="biayaTutupModal()">Tutup</button>
+      <button class="biaya-btn biaya-btn-secondary" onclick="biayaPilihTab('input')">✏️ Edit</button>
+      <button class="biaya-btn biaya-btn-secondary" id="biaya-btn-download" onclick="biayaDownload()">⬇️ Download</button>
+      <button class="biaya-btn biaya-btn-primary" onclick="biayaCetak()">🖨️ Cetak</button>
+    </div>
+
+  </div>
+</div>
+<!-- Area print tersembunyi -->
+<div id="biaya-print-area" style="display:none;"></div>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Script lama -->
   <script src="js/scripts.js"></script>
   <script src="js/custom.js"></script>
+  <script src="js/biaya.js"></script>
   <!-- Script admin — load TERAKHIR -->
   <script src="js/admin.js"></script>
 
