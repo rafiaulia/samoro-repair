@@ -232,6 +232,23 @@
 }
 .pes-btn-danger:hover:not(:disabled) { background: var(--pes-red-600); color: #fff; }
 
+.pes-del-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--pes-gray-400);
+  font-weight: 500;
+}
+.pes-del-sub-strong { color: var(--pes-gray-700); font-weight: 800; }
+.pes-del-warning {
+  background: var(--pes-red-50);
+  border: 1px solid var(--pes-red-100);
+  color: var(--pes-gray-700);
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--pes-radius-md);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
 .pes-btn-print {
   background: var(--pes-green-50); color: var(--pes-green-600); border-color: var(--pes-green-100);
 }
@@ -472,6 +489,56 @@
   border-top: 1px solid var(--pes-gray-100);
 }
 
+/* ── Timeline Modal (konten) ───────────────────── */
+.pes-timeline-modal .pes-modal-body { padding-top: 1rem; }
+
+.pes-timeline-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--pes-gray-400);
+  font-weight: 500;
+}
+.pes-timeline-sub-strong { color: var(--pes-gray-700); font-weight: 700; }
+
+.pes-timeline-meta {
+  border: 1px solid var(--pes-gray-100);
+  background: var(--pes-gray-50);
+  border-radius: var(--pes-radius-md);
+  padding: 0.875rem 1rem;
+  margin-bottom: 1rem;
+}
+.pes-timeline-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--pes-gray-100);
+}
+.pes-timeline-meta-row:last-child { border-bottom: none; }
+.pes-timeline-meta-key {
+  font-size: 0.78rem;
+  color: var(--pes-gray-400);
+  font-weight: 600;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.pes-timeline-meta-val {
+  font-size: 0.82rem;
+  color: var(--pes-gray-800);
+  font-weight: 700;
+  text-align: right;
+}
+
+.pes-timeline-modal-content {
+  border: 1px solid var(--pes-gray-100);
+  border-radius: var(--pes-radius-md);
+  overflow: hidden;
+}
+.pes-timeline-modal-content .pes-timeline-inner {
+  padding: 1rem 1.25rem;
+  background: #fff;
+}
+
 /* ── Form di Modal ──────────────────────────────── */
 .pes-label {
   font-size: 0.82rem;
@@ -679,3 +746,151 @@ select.pes-input {
   .pes-search-wrap { flex-wrap: wrap; }
   .pes-result-info { margin-left: 0; }
 }
+/* ── Expand Button ──────────────────────────────── */
+.pes-expand-btn {
+  background: none;
+  border: 1.5px solid var(--pes-gray-200);
+  border-radius: var(--pes-radius-xs);
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--pes-gray-400);
+  font-size: 0.65rem;
+  transition: var(--pes-transition);
+  flex-shrink: 0;
+}
+.pes-expand-btn:hover {
+  background: var(--pes-blue-50);
+  border-color: var(--pes-blue-200);
+  color: var(--pes-blue-600);
+}
+.pes-expand-btn.pes-expanded {
+  background: var(--pes-blue-600);
+  border-color: var(--pes-blue-600);
+  color: #fff;
+}
+
+/* ── Timeline Row ───────────────────────────────── */
+.pes-timeline-row td {
+  background: var(--pes-gray-50) !important;
+  padding: 0 !important;
+  border-bottom: 2px solid var(--pes-blue-100) !important;
+}
+
+.pes-timeline-inner {
+  padding: 1rem 1.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  animation: pesFadeUp 0.2s ease;
+}
+
+.pes-tl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  position: relative;
+}
+
+.pes-tl-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 28px;
+  width: 2px;
+  height: calc(100% - 8px);
+  background: var(--pes-gray-200);
+}
+
+.pes-tl-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.pes-tl-dot.tl-done    { background: var(--pes-green-100);  color: var(--pes-green-600);  border: 1.5px solid var(--pes-green-600); }
+.pes-tl-dot.tl-active  { background: var(--pes-blue-600);   color: #fff;                  border: 1.5px solid var(--pes-blue-600); }
+.pes-tl-dot.tl-pending { background: var(--pes-gray-100);   color: var(--pes-gray-300);   border: 1.5px solid var(--pes-gray-200); }
+
+.pes-tl-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pes-gray-700);
+  min-width: 140px;
+}
+.pes-tl-label.tl-pending { color: var(--pes-gray-300); font-weight: 500; }
+
+.pes-tl-waktu { font-size: 0.75rem; color: var(--pes-gray-400); font-weight: 500; }
+.pes-tl-waktu.tl-done   { color: var(--pes-green-600); font-weight: 600; }
+.pes-tl-waktu.tl-active { color: var(--pes-blue-600);  font-weight: 600; }
+/* ── Timeline Row ───────────────────────────────── */
+.adm-timeline-row td {
+  background: var(--adm-gray-50) !important;
+  padding: 0 !important;
+  border-bottom: 2px solid var(--adm-blue-100) !important;
+}
+
+.adm-timeline-inner {
+  padding: 1rem 1.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  animation: admFadeUp 0.2s ease;
+}
+
+.adm-tl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  position: relative;
+}
+
+.adm-tl-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 28px;
+  width: 2px;
+  height: calc(100% - 8px);
+  background: var(--adm-gray-200);
+}
+
+.adm-tl-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.adm-tl-dot.tl-done    { background: var(--adm-green-100); color: var(--adm-green-600); border: 1.5px solid var(--adm-green-600); }
+.adm-tl-dot.tl-active  { background: var(--adm-blue-600);  color: #fff;                 border: 1.5px solid var(--adm-blue-600); }
+.adm-tl-dot.tl-pending { background: var(--adm-gray-100);  color: var(--adm-gray-300);  border: 1.5px solid var(--adm-gray-200); }
+
+.adm-tl-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--adm-gray-700);
+  min-width: 140px;
+}
+.adm-tl-label.tl-pending { color: var(--adm-gray-300); font-weight: 500; }
+
+.adm-tl-waktu { font-size: 0.75rem; color: var(--adm-gray-400); font-weight: 500; }
+.adm-tl-waktu.tl-done   { color: var(--adm-green-600); font-weight: 600; }
+.adm-tl-waktu.tl-active { color: var(--adm-blue-600);  font-weight: 600; }

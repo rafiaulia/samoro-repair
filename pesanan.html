@@ -261,6 +261,77 @@
 
   <!-- Toast -->
   <div id="pes-toast" class="pes-toast"></div>
+
+  <!-- ════════════════════════════════════════
+       MODAL KONFIRMASI HAPUS
+       ════════════════════════════════════════ -->
+  <div id="pes-del-overlay" class="pes-modal-overlay" onclick="pesTutupHapusModal(event)">
+    <div class="pes-modal" id="pes-del-modal">
+      <div class="pes-modal-header">
+        <div>
+          <h2 class="pes-modal-title">🗑️ Hapus Order?</h2>
+          <p class="pes-del-sub">
+            Resi: <span id="pes-del-resi" class="pes-del-sub-strong"></span>
+          </p>
+        </div>
+        <button class="pes-modal-close" onclick="pesTutupHapusModal()">✕</button>
+      </div>
+
+      <div class="pes-modal-body">
+        <div class="pes-del-warning">
+          Tindakan ini <b>tidak dapat dibatalkan</b>. Data order akan dihapus permanen.
+        </div>
+        <p id="pes-del-error" class="pes-error mt-3"></p>
+      </div>
+
+      <div class="pes-modal-footer">
+        <button class="pes-btn pes-btn-ghost" onclick="pesTutupHapusModal()" id="pes-del-cancel-btn">Batal</button>
+        <button class="pes-btn pes-btn-danger" onclick="pesHapusKonfirmasi()" id="pes-del-ok-btn">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL TIMELINE STATUS
+       ════════════════════════════════════════ -->
+  <div id="pes-timeline-overlay" class="pes-modal-overlay" onclick="pesTutupTimelineModal(event)">
+    <div class="pes-modal pes-timeline-modal" id="pes-timeline-modal">
+      <div class="pes-modal-header">
+        <div>
+          <h2 class="pes-modal-title">⏱️ Timeline Status</h2>
+          <p class="pes-timeline-sub">
+            Resi: <span id="pes-tl-resi" class="pes-timeline-sub-strong"></span>
+          </p>
+        </div>
+        <button class="pes-modal-close" onclick="pesTutupTimelineModal()">✕</button>
+      </div>
+
+      <div class="pes-modal-body">
+        <div class="pes-timeline-meta">
+          <div class="pes-timeline-meta-row">
+            <span class="pes-timeline-meta-key">Customer</span>
+            <span class="pes-timeline-meta-val" id="pes-tl-nama"></span>
+          </div>
+          <div class="pes-timeline-meta-row">
+            <span class="pes-timeline-meta-key">Perangkat</span>
+            <span class="pes-timeline-meta-val" id="pes-tl-device"></span>
+          </div>
+          <div class="pes-timeline-meta-row">
+            <span class="pes-timeline-meta-key">Status Saat Ini</span>
+            <span class="pes-timeline-meta-val">
+              <span id="pes-tl-status" class="pes-status-badge"></span>
+            </span>
+          </div>
+        </div>
+
+        <div id="pes-timeline-content" class="pes-timeline-modal-content"></div>
+      </div>
+
+      <div class="pes-modal-footer">
+        <button class="pes-btn pes-btn-primary" onclick="pesTutupTimelineModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
 <!-- Modal Nota Biaya -->
 <div id="biaya-overlay" class="biaya-overlay" onclick="biayaTutupModal(event)">
   <div class="biaya-modal">

@@ -82,6 +82,38 @@ function pesEscHtml(str) {
   return d.innerHTML;
 }
 
+function pesBuildTimelineHtml(o) {
+  const waktuMap = {
+    'masuk'            : o.waktu_masuk,
+    'proses perbaikan' : o.waktu_proses,
+    'siap diambil'     : o.waktu_siap,
+    'selesai'          : o.waktu_selesai,
+  };
+
+  const idxAktif = PES_STATUS_LIST.indexOf(o.status);
+
+  const timelineHtml = PES_STATUS_LIST.map((s, idx) => {
+    let state = 'tl-pending';
+    if (idx < idxAktif)   state = 'tl-done';
+    if (idx === idxAktif) state = 'tl-active';
+
+    const dotIsi    = state === 'tl-done' ? '✓' : (idx + 1);
+    const waktuTeks = waktuMap[s] ? pesFormatTanggal(waktuMap[s]) : '—';
+
+    return `
+      <div class="pes-tl-item">
+        <div class="pes-tl-dot ${state}">${dotIsi}</div>
+        <span class="pes-tl-label ${state === 'tl-pending' ? 'tl-pending' : ''}">
+          ${PES_STATUS_LABELS[s]}
+        </span>
+        <span class="pes-tl-waktu ${state}">${waktuTeks}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `<div class="pes-timeline-inner">${timelineHtml}</div>`;
+}
+
 function pesFormatTanggal(dateStr) {
   return new Date(dateStr).toLocaleString('id-ID', {
     day: '2-digit', month: 'short', year: 'numeric',
@@ -244,57 +276,98 @@ function pesRenderHalaman() {
  * @param {number} offset - Nomor urut awal (untuk kolom #)
  */
 function pesRenderBaris(data, offset) {
-  const tbody = document.getElementById('pes-tbody');
+  const tbody   = document.getElementById('pes-tbody');
   if (!tbody) return;
 
-  tbody.innerHTML = data.map((o, i) => `
-    <tr>
-      <td style="color:var(--pes-gray-400); font-size:0.8rem; font-weight:600;">
-        ${offset + i + 1}
-      </td>
-      <td>
-        <div class="pes-resi-cell">
-          <code class="pes-resi-code">${pesEscHtml(o.resi)}</code>
-          <button class="pes-btn-copy" onclick="pesCopyResi('${pesEscHtml(o.resi)}')" title="Salin resi">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-      </td>
-      <td>${pesEscHtml(o.nama_customer)}</td>
-      <td>${pesEscHtml(o.nama_device)}</td>
-      <td>${pesEscHtml(o.layanan)}</td>
-      <td>
-        <span class="pes-keluhan-cell" title="${pesEscHtml(o.keluhan)}">
-          ${pesEscHtml(o.keluhan)}
+  tbody.innerHTML = data.map((o, i) => {
+    return `
+  <tr id="pes-row-${o.id}">
+    <td style="color:var(--pes-gray-400); font-size:0.8rem; font-weight:600;">
+      ${offset + i + 1}
+    </td>
+    <td>
+      <div class="pes-resi-cell">
+        <code class="pes-resi-code">${pesEscHtml(o.resi)}</code>
+        <button class="pes-btn-copy" onclick="pesCopyResi('${pesEscHtml(o.resi)}')" title="Salin resi">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+    </td>
+    <td>${pesEscHtml(o.nama_customer)}</td>
+    <td>${pesEscHtml(o.nama_device)}</td>
+    <td>${pesEscHtml(o.layanan)}</td>
+    <td>
+      <span class="pes-keluhan-cell" title="${pesEscHtml(o.keluhan)}">
+        ${pesEscHtml(o.keluhan)}
+      </span>
+    </td>
+    <td>
+      <span class="pes-status-badge ${PES_STATUS_CSS[o.status] || ''}">
+        ${PES_STATUS_LABELS[o.status] || o.status}
+      </span>
+    </td>
+    <td>
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span style="white-space:nowrap; color:var(--pes-gray-400); font-size:0.78rem;">
+          ${pesFormatTanggal(o.created_at)}
         </span>
-      </td>
-      <td>
-        <span class="pes-status-badge ${PES_STATUS_CSS[o.status] || ''}">
-          ${PES_STATUS_LABELS[o.status] || o.status}
-        </span>
-      </td>
-      <td style="white-space:nowrap; color:var(--pes-gray-400); font-size:0.78rem;">
-        ${pesFormatTanggal(o.created_at)}
-      </td>
-      <td>
-        <div class="d-flex gap-1 flex-wrap">
-          <button class="pes-btn pes-btn-secondary pes-btn-sm"
-            onclick="pesBukaModal(${o.id})">Edit</button>
-          <button class="pes-btn pes-btn-danger pes-btn-sm"
-            onclick="pesHapus(${o.id}, '${pesEscHtml(o.resi)}')">Hapus</button>
-          <button class="pes-btn pes-btn-print pes-btn-sm"
-            onclick="pesCetakNota(${o.id})">🖨️</button>
-            <button class="adm-btn adm-btn-secondary adm-btn-sm"
-  onclick="biayaBukaModalById(${o.id})">💰</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+        <button
+          class="pes-expand-btn"
+          id="pes-exp-btn-${o.id}"
+          onclick="pesBukaTimelineModal(${o.id})"
+          title="Lihat timeline status"
+        >▶</button>
+      </div>
+    </td>
+    <td>
+      <div class="d-flex gap-1 flex-wrap">
+        <button class="pes-btn pes-btn-secondary pes-btn-sm"
+          onclick="pesBukaModal(${o.id})">Edit</button>
+        <button class="pes-btn pes-btn-danger pes-btn-sm"
+          onclick="pesHapus(${o.id}, '${pesEscHtml(o.resi)}')">Hapus</button>
+        <button class="pes-btn pes-btn-print pes-btn-sm"
+          onclick="pesCetakNota(${o.id})">🖨️</button>
+        <button class="pes-btn pes-btn-secondary pes-btn-sm"
+          onclick="biayaBukaModalById(${o.id})">💰</button>
+      </div>
+    </td>
+  </tr>
+`;
+  }).join('');
 }
 
+// ================================================
+// ⏱️  MODAL TIMELINE
+// ================================================
+function pesBukaTimelineModal(id) {
+  const o = _pesAllOrders.find(x => x.id === id);
+  if (!o) return;
+
+  pesSetTeks('pes-tl-resi', o.resi || '');
+  pesSetTeks('pes-tl-nama', o.nama_customer || '');
+  pesSetTeks('pes-tl-device', o.nama_device || '');
+
+  const statusEl = document.getElementById('pes-tl-status');
+  if (statusEl) {
+    statusEl.textContent = PES_STATUS_LABELS[o.status] || o.status || '';
+    statusEl.className = `pes-status-badge ${PES_STATUS_CSS[o.status] || ''}`;
+  }
+
+  const wrap = document.getElementById('pes-timeline-content');
+  if (wrap) wrap.innerHTML = pesBuildTimelineHtml(o);
+
+  pesVisible('pes-timeline-overlay');
+  document.body.style.overflow = 'hidden';
+}
+
+function pesTutupTimelineModal(e) {
+  if (e && e.target !== document.getElementById('pes-timeline-overlay')) return;
+  pesSembEl('pes-timeline-overlay');
+  document.body.style.overflow = '';
+}
 /**
  * Render tombol-tombol halaman pagination
  * @param {number} totalPages
@@ -405,9 +478,26 @@ async function pesSubmitEdit(e) {
   btn.textContent = 'Menyimpan...';
   btn.disabled    = true;
 
+  const kolomWaktu = {
+    'masuk'            : 'waktu_masuk',
+    'proses perbaikan' : 'waktu_proses',
+    'siap diambil'     : 'waktu_siap',
+    'selesai'          : 'waktu_selesai',
+  };
+  
+  const orderLama    = window._pesAllOrders.find(o => o.id === parseInt(id));
+  const statusBerubah = orderLama && orderLama.status !== status;
+  
+  const payload = { nama_customer: nama, nama_device: device, layanan, keluhan, status };
+  
+  if (statusBerubah) {
+    const kolom = kolomWaktu[status];
+    if (kolom) payload[kolom] = new Date().toISOString();
+  }
+  
   const { error } = await window._pesDb
     .from('orders')
-    .update({ nama_customer: nama, nama_device: device, layanan, keluhan, status })
+    .update(payload)
     .eq('id', parseInt(id));
 
   btn.textContent = ori;
@@ -434,14 +524,58 @@ function pesShowError(msg) {
 // 🗑️  HAPUS
 // ================================================
 async function pesHapus(id, resi) {
-  if (!confirm(`Hapus order:\n${resi}\n\nTindakan ini tidak dapat dibatalkan.`)) return;
+  // Legacy: sebelumnya pakai confirm(). Sekarang gunakan modal.
+  pesBukaHapusModal(id, resi);
+}
+
+let _pesPendingDelete = null; // { id, resi }
+
+function pesBukaHapusModal(id, resi) {
+  _pesPendingDelete = { id, resi };
+  pesSetTeks('pes-del-resi', resi || '');
+  pesSembEl('pes-del-error');
+  pesVisible('pes-del-overlay');
+  document.body.style.overflow = 'hidden';
+}
+
+function pesTutupHapusModal(e) {
+  if (e && e.target !== document.getElementById('pes-del-overlay')) return;
+  pesSembEl('pes-del-overlay');
+  document.body.style.overflow = '';
+  _pesPendingDelete = null;
+}
+
+async function pesHapusKonfirmasi() {
+  if (!_pesPendingDelete) return;
+  pesSembEl('pes-del-error');
+
+  const okBtn = document.getElementById('pes-del-ok-btn');
+  const cancelBtn = document.getElementById('pes-del-cancel-btn');
+  const oriOk = okBtn?.textContent;
+  if (okBtn) { okBtn.textContent = 'Menghapus...'; okBtn.disabled = true; }
+  if (cancelBtn) cancelBtn.disabled = true;
+
+  const { id } = _pesPendingDelete;
 
   const { error } = await window._pesDb
     .from('orders').delete().eq('id', id);
 
-  if (error) { pesToast('Gagal menghapus!', 'err'); return; }
+  if (okBtn) { okBtn.textContent = oriOk || 'Hapus'; okBtn.disabled = false; }
+  if (cancelBtn) cancelBtn.disabled = false;
+
+  if (error) {
+    const el = document.getElementById('pes-del-error');
+    if (el) {
+      el.textContent = 'Gagal menghapus: ' + error.message;
+      el.classList.add('pes-visible');
+    } else {
+      pesToast('Gagal menghapus!', 'err');
+    }
+    return;
+  }
 
   pesToast('✓ Order berhasil dihapus!');
+  pesTutupHapusModal();
   pesMuatOrder();
 }
 

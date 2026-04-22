@@ -46,7 +46,7 @@
           <div class="mb-3">
             <label class="adm-label" for="adm-email">Email Admin</label>
             <input type="email" id="adm-email" class="adm-input"
-              placeholder="admin@samoro-repair.com" autocomplete="email" required>
+              placeholder="masukkan email" autocomplete="email" required>
           </div>
           <div class="mb-3">
             <label class="adm-label" for="adm-password">Password</label>
@@ -231,6 +231,7 @@
                 style="max-width:220px; padding:0.45rem 0.75rem; font-size:0.82rem;"
                 placeholder="🔍 Cari resi, nama, perangkat..."
                 oninput="admFilterTabel()" autocomplete="off">
+              <span id="adm-result-info" class="adm-result-info"></span>
               <button class="adm-btn adm-btn-secondary adm-btn-sm"
                 onclick="admMuatOrder()" title="Refresh">
                 ↺ Refresh
@@ -260,6 +261,12 @@
               </thead>
               <tbody id="adm-tbody"></tbody>
             </table>
+          </div>
+
+          <!-- Pagination -->
+          <div id="adm-pagination" class="adm-pagination" style="display:none;">
+            <span class="adm-pagination-info" id="adm-pag-info"></span>
+            <div class="adm-pagination-btns" id="adm-pag-btns"></div>
           </div>
 
           <!-- Empty state -->
@@ -342,6 +349,77 @@
 </div>
   <!-- Toast -->
   <div id="adm-toast" class="adm-toast"></div>
+
+  <!-- ════════════════════════════════════════
+       MODAL KONFIRMASI HAPUS
+       ════════════════════════════════════════ -->
+  <div id="adm-del-overlay" class="adm-modal-overlay" onclick="admTutupHapusModal(event)">
+    <div class="adm-modal" id="adm-del-modal">
+      <div class="adm-modal-header">
+        <div>
+          <h2 class="adm-modal-title">🗑️ Hapus Order?</h2>
+          <p class="adm-del-sub">
+            Resi: <span id="adm-del-resi" class="adm-del-sub-strong"></span>
+          </p>
+        </div>
+        <button class="adm-modal-close" onclick="admTutupHapusModal()">✕</button>
+      </div>
+
+      <div class="adm-modal-body">
+        <div class="adm-del-warning">
+          Tindakan ini <b>tidak dapat dibatalkan</b>. Data order akan dihapus permanen.
+        </div>
+        <p id="adm-del-error" class="adm-error mt-3"></p>
+      </div>
+
+      <div class="adm-modal-footer">
+        <button class="adm-btn adm-btn-ghost" onclick="admTutupHapusModal()" id="adm-del-cancel-btn">Batal</button>
+        <button class="adm-btn adm-btn-danger" onclick="admHapusKonfirmasi()" id="adm-del-ok-btn">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL TIMELINE STATUS
+       ════════════════════════════════════════ -->
+  <div id="adm-timeline-overlay" class="adm-modal-overlay" onclick="admTutupTimelineModal(event)">
+    <div class="adm-modal adm-timeline-modal" id="adm-timeline-modal">
+      <div class="adm-modal-header">
+        <div>
+          <h2 class="adm-modal-title">⏱️ Timeline Status</h2>
+          <p class="adm-timeline-sub">
+            Resi: <span id="adm-tl-resi" class="adm-timeline-sub-strong"></span>
+          </p>
+        </div>
+        <button class="adm-modal-close" onclick="admTutupTimelineModal()">✕</button>
+      </div>
+
+      <div class="adm-modal-body">
+        <div class="adm-timeline-meta">
+          <div class="adm-timeline-meta-row">
+            <span class="adm-timeline-meta-key">Customer</span>
+            <span class="adm-timeline-meta-val" id="adm-tl-nama"></span>
+          </div>
+          <div class="adm-timeline-meta-row">
+            <span class="adm-timeline-meta-key">Perangkat</span>
+            <span class="adm-timeline-meta-val" id="adm-tl-device"></span>
+          </div>
+          <div class="adm-timeline-meta-row">
+            <span class="adm-timeline-meta-key">Status Saat Ini</span>
+            <span class="adm-timeline-meta-val">
+              <span id="adm-tl-status" class="adm-status-pill"></span>
+            </span>
+          </div>
+        </div>
+
+        <div id="adm-timeline-content" class="adm-timeline-modal-content"></div>
+      </div>
+
+      <div class="adm-modal-footer">
+        <button class="adm-btn adm-btn-primary" onclick="admTutupTimelineModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
 <!-- Modal Nota Biaya -->
 <div id="biaya-overlay" class="biaya-overlay" onclick="biayaTutupModal(event)">
   <div class="biaya-modal">

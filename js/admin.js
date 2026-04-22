@@ -42,6 +42,13 @@ const ADM_STATUS_COLORS = {
 window._admOrders = [];  // dan semua referensi _admOrders → window._admOrders
 
 // ================================================
+// 📄 PAGINATION (maks 10 baris)
+// ================================================
+const ADM_PER_PAGE = 10;
+let _admFilteredOrders = [];
+let _admCurrentPage = 1;
+
+// ================================================
 // 🛠️  HELPER UTILITIES
 // ================================================
 function admSetTeks(id, teks) {
@@ -74,6 +81,38 @@ function admEscHtml(str) {
   const div = document.createElement('div');
   div.textContent = str || '';
   return div.innerHTML;
+}
+
+function admBuildTimelineHtml(o) {
+  const waktuMap = {
+    'masuk'            : o.waktu_masuk,
+    'proses perbaikan' : o.waktu_proses,
+    'siap diambil'     : o.waktu_siap,
+    'selesai'          : o.waktu_selesai,
+  };
+
+  const idxAktif = ADM_STATUS_LIST.indexOf(o.status);
+
+  const timelineHtml = ADM_STATUS_LIST.map((s, idx) => {
+    let state = 'tl-pending';
+    if (idx < idxAktif)   state = 'tl-done';
+    if (idx === idxAktif) state = 'tl-active';
+
+    const dotIsi    = state === 'tl-done' ? '✓' : (idx + 1);
+    const waktuTeks = waktuMap[s] ? admFormatTanggal(waktuMap[s]) : '—';
+
+    return `
+      <div class="adm-tl-item">
+        <div class="adm-tl-dot ${state}">${dotIsi}</div>
+        <span class="adm-tl-label ${state === 'tl-pending' ? 'tl-pending' : ''}">
+          ${ADM_STATUS_LABELS[s]}
+        </span>
+        <span class="adm-tl-waktu ${state}">${waktuTeks}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `<div class="adm-timeline-inner">${timelineHtml}</div>`;
 }
 
 /**
@@ -213,6 +252,7 @@ function admTampilDashboard(user) {
 async function admMuatOrder() {
   admHideEl('adm-tbl-wrap');
   admHideEl('adm-tbl-empty');
+  admHideEl('adm-pagination');
   admShowEl('adm-tbl-loading', 'flex');
 
   const { data, error } = await window._admDb
@@ -230,8 +270,8 @@ async function admMuatOrder() {
 
   // Sinkronkan cache lokal & global (dipakai oleh biaya.js)
   _admOrders = window._admOrders = data || [];
-  admRenderTabel(_admOrders);
   admUpdateStats(_admOrders);
+  admApplyFilterAndRender();
 }
 
 /**
@@ -242,60 +282,167 @@ function admRenderTabel(orders) {
   const tbody = document.getElementById('adm-tbody');
   if (!tbody) return;
 
-  if (orders.length === 0) {
+  tbody.innerHTML = orders.map(o => {
+    return `
+      <tr id="adm-row-${o.id}">
+        <td>
+          <div class="adm-resi-cell">
+            <code class="adm-resi-code">${admEscHtml(o.resi)}</code>
+            <button class="adm-btn-copy" onclick="admCopyResi('${admEscHtml(o.resi)}')" title="Salin nomor resi">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </td>
+        <td>${admEscHtml(o.nama_customer)}</td>
+        <td>${admEscHtml(o.nama_device)}</td>
+        <td>${admEscHtml(o.layanan)}</td>
+        <td>
+          <select class="adm-status-select ${ADM_STATUS_COLORS[o.status] || ''}"
+            onchange="admQuickStatus(${o.id}, this.value)">
+            ${ADM_STATUS_LIST.map(s => `
+              <option value="${s}" ${s === o.status ? 'selected' : ''}>${ADM_STATUS_LABELS[s]}</option>
+            `).join('')}
+          </select>
+        </td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="white-space:nowrap; color:var(--adm-gray-400); font-size:0.82rem;">
+              ${admFormatTanggal(o.created_at)}
+            </span>
+            <button
+              class="adm-expand-btn"
+              id="adm-exp-btn-${o.id}"
+              onclick="admBukaTimelineModal(${o.id})"
+              title="Lihat timeline"
+            >▶</button>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex gap-1">
+            <button class="adm-btn adm-btn-secondary adm-btn-sm" onclick="admEditOrder(${o.id})">Edit</button>
+            <button class="adm-btn adm-btn-danger adm-btn-sm" onclick="admHapusOrder(${o.id}, '${admEscHtml(o.resi)}')">Hapus</button>
+            <button class="adm-btn adm-btn-print adm-btn-sm" onclick="admCetakNota(${o.id})">🖨️</button>
+            <button class="adm-btn adm-btn-secondary adm-btn-sm" onclick="biayaBukaModalById(${o.id})">💰</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function admApplyFilterAndRender() {
+  const kw = (document.getElementById('adm-search')?.value || '').toLowerCase().trim();
+  _admFilteredOrders = kw
+    ? _admOrders.filter(o =>
+        (o.resi || '').toLowerCase().includes(kw) ||
+        (o.nama_customer || '').toLowerCase().includes(kw) ||
+        (o.nama_device || '').toLowerCase().includes(kw) ||
+        (o.layanan || '').toLowerCase().includes(kw)
+      )
+    : [..._admOrders];
+
+  _admCurrentPage = 1;
+  admRenderHalaman();
+}
+
+function admRenderHalaman() {
+  const total = _admFilteredOrders.length;
+  const totalPages = Math.max(1, Math.ceil(total / ADM_PER_PAGE));
+  if (_admCurrentPage > totalPages) _admCurrentPage = totalPages;
+
+  const start = (_admCurrentPage - 1) * ADM_PER_PAGE;
+  const end = Math.min(start + ADM_PER_PAGE, total);
+  const pageData = _admFilteredOrders.slice(start, end);
+
+  const infoEl = document.getElementById('adm-result-info');
+  if (infoEl) {
+    infoEl.textContent = total === 0
+      ? 'Tidak ada data'
+      : `Menampilkan ${start + 1}–${end} dari ${total} order`;
+  }
+
+  if (total === 0) {
     admShowEl('adm-tbl-empty');
     admHideEl('adm-tbl-wrap');
+    admHideEl('adm-pagination');
     return;
   }
 
   admHideEl('adm-tbl-empty');
   admShowEl('adm-tbl-wrap');
+  admShowEl('adm-pagination', 'flex');
+  admRenderTabel(pageData);
+  admRenderPaginasi(totalPages);
+}
 
-  tbody.innerHTML = orders.map(o => `
-    <tr>
-      <td>
-        <div class="adm-resi-cell">
-          <code class="adm-resi-code">${admEscHtml(o.resi)}</code>
-          <button class="adm-btn-copy" onclick="admCopyResi('${admEscHtml(o.resi)}')" title="Salin nomor resi">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-      </td>
-      <td>${admEscHtml(o.nama_customer)}</td>
-      <td>${admEscHtml(o.nama_device)}</td>
-      <td>${admEscHtml(o.layanan)}</td>
-      <td>
-        <select
-          class="adm-status-select ${ADM_STATUS_COLORS[o.status] || ''}"
-          onchange="admQuickStatus(${o.id}, this.value)"
-        >
-          ${ADM_STATUS_LIST.map(s => `
-            <option value="${s}" ${s === o.status ? 'selected' : ''}>
-              ${ADM_STATUS_LABELS[s]}
-            </option>
-          `).join('')}
-        </select>
-      </td>
-      <td style="white-space:nowrap; color:var(--adm-gray-400); font-size:0.82rem;">
-        ${admFormatTanggal(o.created_at)}
-      </td>
-      <td>
-<div class="d-flex gap-1">
-  <button class="adm-btn adm-btn-secondary adm-btn-sm"
-    onclick="admEditOrder(${o.id})">Edit</button>
-  <button class="adm-btn adm-btn-danger adm-btn-sm"
-    onclick="admHapusOrder(${o.id}, '${admEscHtml(o.resi)}')">Hapus</button>
-  <button class="adm-btn adm-btn-print adm-btn-sm"
-    onclick="admCetakNota(${o.id})">🖨️</button>
-    <button class="adm-btn adm-btn-secondary adm-btn-sm"
-  onclick="biayaBukaModalById(${o.id})">💰</button>
-</div>
-      </td>
-    </tr>
-  `).join('');
+function admRenderPaginasi(totalPages) {
+  const infoEl = document.getElementById('adm-pag-info');
+  const btnsEl = document.getElementById('adm-pag-btns');
+  if (!infoEl || !btnsEl) return;
+
+  infoEl.textContent = `Halaman ${_admCurrentPage} dari ${totalPages}`;
+
+  let startPage = Math.max(1, _admCurrentPage - 2);
+  let endPage   = Math.min(totalPages, startPage + 4);
+  if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
+  let html = '';
+  html += `<button class="adm-page-btn" onclick="admGantiHalaman(${_admCurrentPage - 1})"
+    ${_admCurrentPage === 1 ? 'disabled' : ''}>‹</button>`;
+
+  for (let p = startPage; p <= endPage; p++) {
+    html += `<button class="adm-page-btn ${p === _admCurrentPage ? 'adm-page-active' : ''}"
+      onclick="admGantiHalaman(${p})">${p}</button>`;
+  }
+
+  html += `<button class="adm-page-btn" onclick="admGantiHalaman(${_admCurrentPage + 1})"
+    ${_admCurrentPage === totalPages ? 'disabled' : ''}>›</button>`;
+
+  btnsEl.innerHTML = html;
+}
+
+function admGantiHalaman(page) {
+  const totalPages = Math.ceil(_admFilteredOrders.length / ADM_PER_PAGE);
+  if (page < 1 || page > totalPages) return;
+  _admCurrentPage = page;
+  admRenderHalaman();
+
+  document.getElementById('adm-tbl-wrap')?.scrollIntoView({
+    behavior: 'smooth', block: 'nearest',
+  });
+}
+
+// ================================================
+// ⏱️  MODAL TIMELINE (Admin)
+// ================================================
+function admBukaTimelineModal(id) {
+  const o = _admOrders.find(x => x.id === id);
+  if (!o) return;
+
+  admSetTeks('adm-tl-resi', o.resi || '');
+  admSetTeks('adm-tl-nama', o.nama_customer || '');
+  admSetTeks('adm-tl-device', o.nama_device || '');
+
+  const statusEl = document.getElementById('adm-tl-status');
+  if (statusEl) {
+    statusEl.textContent = ADM_STATUS_LABELS[o.status] || o.status || '';
+    statusEl.className = `adm-status-pill ${ADM_STATUS_COLORS[o.status] || ''}`;
+  }
+
+  const wrap = document.getElementById('adm-timeline-content');
+  if (wrap) wrap.innerHTML = admBuildTimelineHtml(o);
+
+  document.getElementById('adm-timeline-overlay')?.classList.add('adm-visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function admTutupTimelineModal(e) {
+  if (e && e.target !== document.getElementById('adm-timeline-overlay')) return;
+  document.getElementById('adm-timeline-overlay')?.classList.remove('adm-visible');
+  document.body.style.overflow = '';
 }
 
 /**
@@ -329,14 +476,7 @@ document.getElementById('adm-stat-selesai')?.closest('.adm-stat-card')
  * Filter tabel berdasarkan pencarian
  */
 function admFilterTabel() {
-  const kw = document.getElementById('adm-search').value.toLowerCase();
-  const filtered = _admOrders.filter(o =>
-    o.resi.toLowerCase().includes(kw)           ||
-    o.nama_customer.toLowerCase().includes(kw)  ||
-    o.nama_device.toLowerCase().includes(kw)    ||
-    o.layanan.toLowerCase().includes(kw)
-  );
-  admRenderTabel(filtered);
+  admApplyFilterAndRender();
 }
 
 // ================================================
@@ -412,8 +552,19 @@ async function admSubmitOrder(e) {
  * UPDATE orders SET status = $status WHERE id = $id
  */
 async function admQuickStatus(id, status) {
+  const kolomWaktu = {
+    'masuk'            : 'waktu_masuk',
+    'proses perbaikan' : 'waktu_proses',
+    'siap diambil'     : 'waktu_siap',
+    'selesai'          : 'waktu_selesai',
+  };
+
+  const payload = { status };
+  const kolom   = kolomWaktu[status];
+  if (kolom) payload[kolom] = new Date().toISOString();
+
   const { error } = await window._admDb
-    .from('orders').update({ status }).eq('id', id);
+    .from('orders').update(payload).eq('id', id);
 
   if (error) {
     admToast('Gagal update status!', 'err');
@@ -422,10 +573,10 @@ async function admQuickStatus(id, status) {
   }
 
   admToast('✓ Status diperbarui!');
-  const order = _admOrders.find(o => o.id === id);
+  const order = window._admOrders.find(o => o.id === id);
   if (order) {
     order.status = status;
-    admUpdateStats(_admOrders);
+    admUpdateStats(window._admOrders);
   }
 }
 
@@ -493,17 +644,52 @@ if (printBtn) printBtn.style.display = 'none';
  * DELETE FROM orders WHERE id = $id
  */
 async function admHapusOrder(id, resi) {
-  if (!confirm(`Hapus order:\n${resi}\n\nTindakan ini tidak dapat dibatalkan.`)) return;
+  // Legacy: sebelumnya pakai confirm(). Sekarang gunakan modal.
+  admBukaHapusModal(id, resi);
+}
+
+let _admPendingDelete = null; // { id, resi }
+
+function admBukaHapusModal(id, resi) {
+  _admPendingDelete = { id, resi };
+  admSetTeks('adm-del-resi', resi || '');
+  admSembError('adm-del-error');
+  document.getElementById('adm-del-overlay')?.classList.add('adm-visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function admTutupHapusModal(e) {
+  if (e && e.target !== document.getElementById('adm-del-overlay')) return;
+  document.getElementById('adm-del-overlay')?.classList.remove('adm-visible');
+  document.body.style.overflow = '';
+  _admPendingDelete = null;
+}
+
+async function admHapusKonfirmasi() {
+  if (!_admPendingDelete) return;
+  admSembError('adm-del-error');
+
+  const okBtn = document.getElementById('adm-del-ok-btn');
+  const cancelBtn = document.getElementById('adm-del-cancel-btn');
+  const oriOk = okBtn?.textContent;
+  if (okBtn) { okBtn.textContent = 'Menghapus...'; okBtn.disabled = true; }
+  if (cancelBtn) cancelBtn.disabled = true;
+
+  const { id } = _admPendingDelete;
 
   const { error } = await window._admDb
     .from('orders').delete().eq('id', id);
 
+  if (okBtn) { okBtn.textContent = oriOk || 'Hapus'; okBtn.disabled = false; }
+  if (cancelBtn) cancelBtn.disabled = false;
+
   if (error) {
-    admToast('Gagal menghapus!', 'err');
+    admTampilError('adm-del-error', 'Gagal menghapus: ' + error.message);
     return;
   }
 
   admToast('✓ Order berhasil dihapus!');
+  admTutupHapusModal();
   admMuatOrder();
 }
 // ================================================
@@ -586,6 +772,8 @@ async function admDownloadNota() {
     btn.disabled    = false;
   }
 }
+
+// (Legacy) expand-row timeline sudah diganti modal.
 // ================================================
 // 🚀 INIT
 // ================================================

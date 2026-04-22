@@ -506,3 +506,22 @@
   .lacak-detail-full { grid-column: 1; }
   .lacak-toast { left: 1rem; right: 1rem; max-width: unset; }
 }
+.lacak-timeline-waktu {
+  font-size: 0.72rem;
+  color: var(--lacak-gray-400);
+  font-weight: 500;
+  margin-top: 0.2rem;
+  font-style: italic;
+}
+
+.lacak-step-done .lacak-timeline-waktu {
+  color: var(--lacak-green-600);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.lacak-step-active .lacak-timeline-waktu {
+  color: var(--lacak-blue-600);
+  font-style: normal;
+  font-weight: 600;
+}

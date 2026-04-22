@@ -191,7 +191,7 @@ function lacakTampilHasil(order) {
     badge.textContent = LACAK_STATUS_LABELS[order.status] || order.status;
   }
 
-  lacakRenderTimeline(order.status);
+  lacakRenderTimeline(order);
   lacakTampilEl('lacak-result-card');
 
   // Scroll halus ke result card
@@ -210,15 +210,23 @@ function lacakTampilHasil(order) {
  * Render progress timeline berdasarkan status saat ini
  * @param {string} statusSaatIni
  */
-function lacakRenderTimeline(statusSaatIni) {
+function lacakRenderTimeline(order) {
   const container = document.getElementById('lacak-timeline');
   if (!container) return;
 
-  const idxAktif = LACAK_STATUS_LIST.indexOf(statusSaatIni);
+  // Map status ke kolom waktu
+  const waktuMap = {
+    'masuk'            : order.waktu_masuk,
+    'proses perbaikan' : order.waktu_proses,
+    'siap diambil'     : order.waktu_siap,
+    'selesai'          : order.waktu_selesai,
+  };
+
+  const idxAktif = LACAK_STATUS_LIST.indexOf(order.status);
 
   container.innerHTML = LACAK_STATUS_LIST.map((status, idx) => {
     let state = 'lacak-step-pending';
-    if (idx < idxAktif)  state = 'lacak-step-done';
+    if (idx < idxAktif)   state = 'lacak-step-done';
     if (idx === idxAktif) state = 'lacak-step-active';
 
     const isLast    = idx === LACAK_STATUS_LIST.length - 1;
@@ -226,6 +234,14 @@ function lacakRenderTimeline(statusSaatIni) {
     const connector = !isLast
       ? '<div class="lacak-timeline-connector"></div>'
       : '';
+
+    // Format waktu jika ada
+    const waktu = waktuMap[status];
+    const waktuHtml = waktu
+      ? `<p class="lacak-timeline-waktu">${lacakFormatWaktu(waktu)}</p>`
+      : (state !== 'lacak-step-pending'
+          ? '<p class="lacak-timeline-waktu" style="color:var(--lacak-gray-300);">—</p>'
+          : '');
 
     return `
       <div class="lacak-timeline-step ${state}">
@@ -237,6 +253,7 @@ function lacakRenderTimeline(statusSaatIni) {
           <p class="lacak-timeline-label">
             ${lacakEscHtml(LACAK_STATUS_LABELS[status] || status)}
           </p>
+          ${waktuHtml}
           ${state === 'lacak-step-active'
             ? '<p class="lacak-timeline-now">✦ Status Saat Ini</p>'
             : ''}
@@ -244,6 +261,15 @@ function lacakRenderTimeline(statusSaatIni) {
       </div>
     `;
   }).join('');
+}
+
+// Helper format waktu untuk timeline
+function lacakFormatWaktu(dateStr) {
+  return new Date(dateStr).toLocaleString('id-ID', {
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+    timeZone: 'Asia/Jakarta', hour12: false,
+  }) + ' WIB';
 }
 
 // ================================================

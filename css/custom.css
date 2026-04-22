@@ -4,6 +4,22 @@
    NAVBAR & DROPDOWN
    ============================================ */
 
+
+   @keyframes floating {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  .raf-img {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+
+
+
+
+
 .custom-navbar {
   padding: 1rem 0;
   font-family: 'Poppins', sans-serif;
@@ -1352,7 +1368,7 @@ a.raf-btn {
 }
 
 .footer-logo-img {
-  width: 40px;
+  width: 200px;
   margin-bottom: 12px;
 }
 
