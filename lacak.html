@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/custom.css">
   <!-- CSS khusus halaman lacak — load TERAKHIR supaya prioritas lebih tinggi -->
   <link rel="stylesheet" href="css/lacak.css">
+   <link rel="stylesheet" href="css/variables.css">
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -156,7 +157,7 @@
   <div id="lacak-toast" class="lacak-toast"></div>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
   <!-- Script lama (berisi inject navbar/footer) -->
   <script src="js/scripts.js"></script>
   <script src="js/custom.js"></script>
@@ -169,6 +170,7 @@ fetch("/navbar.html")
   .then(data => {
     const nav = document.getElementById("navbar-placeholder");
     if (nav) nav.innerHTML = data;
+     setActiveNavLink();
   });
 
 // load footer

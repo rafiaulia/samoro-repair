@@ -276,8 +276,13 @@ function pesRenderBaris(data, offset) {
           ${PES_STATUS_LABELS[o.status] || o.status}
         </span>
       </td>
-      <td style="white-space:nowrap; color:var(--pes-gray-400); font-size:0.78rem;">
-        ${pesFormatTanggal(o.created_at)}
+      <td>
+        <div style="display:flex; align-items:center; gap:0.4rem;">
+          <span style="white-space:nowrap; color:var(--pes-gray-400); font-size:0.78rem;">
+            ${pesFormatTanggal(o.created_at)}
+          </span>
+          <button class="tl-btn" onclick="tlBukaModal(${o.id})" title="Lihat timeline status">▶</button>
+        </div>
       </td>
       <td>
         <div class="d-flex gap-1 flex-wrap">
@@ -287,8 +292,8 @@ function pesRenderBaris(data, offset) {
             onclick="pesHapus(${o.id}, '${pesEscHtml(o.resi)}')">Hapus</button>
           <button class="pes-btn pes-btn-print pes-btn-sm"
             onclick="pesCetakNota(${o.id})">🖨️</button>
-            <button class="adm-btn adm-btn-secondary adm-btn-sm"
-  onclick="biayaBukaModalById(${o.id})">💰</button>
+          <button class="pes-btn pes-btn-secondary pes-btn-sm"
+            onclick="biayaBukaModalById(${o.id})">💰</button>
         </div>
       </td>
     </tr>
@@ -405,10 +410,26 @@ async function pesSubmitEdit(e) {
   btn.textContent = 'Menyimpan...';
   btn.disabled    = true;
 
-  const { error } = await window._pesDb
-    .from('orders')
-    .update({ nama_customer: nama, nama_device: device, layanan, keluhan, status })
-    .eq('id', parseInt(id));
+  const kolomWaktu = {
+  'masuk'            : 'waktu_masuk',
+  'proses perbaikan' : 'waktu_proses',
+  'siap diambil'     : 'waktu_siap',
+  'selesai'          : 'waktu_selesai',
+};
+
+const orderLama     = window._pesAllOrders.find(o => o.id === parseInt(id));
+const statusBerubah = orderLama && orderLama.status !== status;
+const payload       = { nama_customer: nama, nama_device: device, layanan, keluhan, status };
+
+if (statusBerubah) {
+  const kolom = kolomWaktu[status];
+  if (kolom) payload[kolom] = new Date().toISOString();
+}
+
+const { error } = await window._pesDb
+  .from('orders')
+  .update(payload)
+  .eq('id', parseInt(id));
 
   btn.textContent = ori;
   btn.disabled    = false;

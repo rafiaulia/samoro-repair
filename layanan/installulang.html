@@ -24,6 +24,7 @@
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="../css/styles.css" rel="stylesheet" />
   <link href="../css/custom.css" rel="stylesheet" />
+  <link href="../css/variables.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -33,7 +34,203 @@
 
 
 </head>
-<div id="navbar-placeholder"></div>
+<body>
+  <!-- Navbar langsung di-include (tidak pakai fetch agar kompatibel dengan file:// protocol) -->
+  <nav class="navnew" id="navnew">
+    <div class="navnew__inner">
+
+      <!-- Logo -->
+      <a href="../index.html" class="navnew__logo">
+        <img src="../assets/LOGO SAMORO GRADIENT REPAIR NAVBARy.png" alt="Samoro Repair"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <!-- Fallback teks kalau gambar tidak ada -->
+        <span style="display:none;font-weight:700;font-size:18px;color:#6C5CE7;font-family:'Sora',sans-serif">
+          <span style="background:#6C5CE7;color:#fff;padding:2px 8px;border-radius:6px;margin-right:4px">S</span>amoro
+          <span style="color:#1a1a2e;font-size:12px;font-weight:500">repair</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="navnew__links">
+        <li class="navnew__item">
+          <a href="../index.html" class="navnew__link">Home</a>
+        </li>
+
+        <!-- Dropdown Layanan -->
+        <li class="navnew__item" id="dd-layanan">
+          <button class="navnew__link" style="background:none;border:none;cursor:pointer;font-family:inherit"
+                  aria-expanded="false" onclick="toggleDropdown('dd-layanan', this)">
+            Layanan
+            <svg class="navnew__chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <ul class="navnew__dropdown">
+            <li>
+              <a href="installulang.html" class="navnew__dropdown-item">
+                <span class="navnew__dropdown-icon">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </span>
+                <span class="navnew__dropdown-text">
+                  <span class="navnew__dropdown-title">Install Ulang</span>
+                  <span class="navnew__dropdown-desc">Windows & Linux</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="gantissdharddisk.html" class="navnew__dropdown-item">
+                <span class="navnew__dropdown-icon">
+                  <i class="bi bi-device-ssd"></i>
+                </span>
+                <span class="navnew__dropdown-text">
+                  <span class="navnew__dropdown-title">Ganti SSD / Harddisk</span>
+                  <span class="navnew__dropdown-desc">Upgrade kapasitas storage</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="gantiram.html" class="navnew__dropdown-item">
+                <span class="navnew__dropdown-icon">
+                  <i class="bi bi-memory"></i>
+                </span>
+                <span class="navnew__dropdown-text">
+                  <span class="navnew__dropdown-title">Ganti RAM</span>
+                  <span class="navnew__dropdown-desc">Performa lebih kencang</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="cleaningrepasta.html" class="navnew__dropdown-item">
+                <span class="navnew__dropdown-icon">
+                  <i class="bi bi-wind"></i>
+                </span>
+                <span class="navnew__dropdown-text">
+                  <span class="navnew__dropdown-title">Cleaning Repasta</span>
+                  <span class="navnew__dropdown-desc">Laptop adem & bersih</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="navnew__item">
+          <a href="../lacak.html" class="navnew__link">Lacak Pesanan</a>
+        </li>
+        <li class="navnew__item">
+          <a href="../syaratketentuan.html" class="navnew__link">Syarat Ketentuan</a>
+        </li>
+        <li class="navnew__item">
+          <a href="../pertanyaan.html" class="navnew__link">Pertanyaan</a>
+        </li>
+        <li class="navnew__item">
+          <a href="../admin.html" class="navnew__link">Admin</a>
+        </li>
+      </ul>
+
+      <!-- CTA -->
+      <a href="../konsultasi.html" class="navnew__cta">Konsultasi</a>
+
+      <!-- Hamburger -->
+      <button class="navnew__toggle" id="navnew-toggle" aria-label="Toggle menu">
+        <span class="navnew__toggle-line"></span>
+        <span class="navnew__toggle-line"></span>
+      </button>
+
+      <button class="navnew__dark-toggle" id="darkToggle" onclick="toggleDarkMode()">
+        <span class="dark-toggle-icon">🌙</span>
+        <span class="dark-toggle-label">Dark Mode</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="navnew__mobile" id="navnew-mobile">
+    <a href="../index.html" class="navnew__mobile-link">Home</a>
+
+    <div class="navnew__mobile-group-title">Layanan</div>
+    <a href="installulang.html" class="navnew__mobile-link" style="padding-left:24px">💿 Install Ulang</a>
+    <a href="gantissdharddisk.html" class="navnew__mobile-link" style="padding-left:24px">💾 Ganti SSD / Harddisk</a>
+    <a href="gantiram.html" class="navnew__mobile-link" style="padding-left:24px">🧩 Ganti RAM</a>
+    <a href="cleaningrepasta.html" class="navnew__mobile-link" style="padding-left:24px">🧹 Cleaning Repasta</a>
+
+    <div class="navnew__divider"></div>
+    <a href="../lacak.html" class="navnew__mobile-link">Lacak Pesanan</a>
+    <a href="../syaratketentuan.html" class="navnew__mobile-link">Syarat Ketentuan</a>
+    <a href="../pertanyaan.html" class="navnew__mobile-link">Pertanyaan</a>
+    <a href="../admin.html" class="navnew__mobile-link">Admin</a>
+
+    <a href="../konsultasi.html" class="navnew__mobile-cta">Konsultasi →</a>
+  </div>
+
+  <!-- Footer langsung di-include (tidak pakai fetch agar kompatibel dengan file:// protocol) -->
+  <footer class="custom-footer mt-5">
+    <div class="footer-wrapper">
+
+      <!-- Section Logo -->
+      <div class="footer-logo-section">
+        <img src="../assets/logofooter.png" alt="Logo" class="footer-logo-img" />
+
+        <p>
+          Ras Repair melayani jasa perbaikan perangkat dan layanan IT dengan proses
+          yang transparan. Informasi layanan dan harga dapat dilihat melalui website ini.
+        </p>
+
+        <a href="mailto:rafiajastore@gmail.com" class="customsosmed--footer mb-1">
+          <i class="bi bi-envelope"></i> rafiajastore@gmail.com
+        </a><br>
+
+        <a href="https://api.whatsapp.com/send/?phone=6285954395248"
+           class="customsosmed--footer">
+          <i class="bi bi-whatsapp"></i> WhatsApp Kami
+        </a>
+      </div>
+
+      <!-- Section Layanan -->
+      <div class="footer-layanan-section">
+        <h4>Layanan</h4>
+        <ul>
+          <li><a href="installulang.html">Install Ulang</a></li>
+          <li><a href="gantissdharddisk.html">Ganti SSD / Harddisk</a></li>
+          <li><a href="gantiram.html">Ganti RAM</a></li>
+          <li><a href="cleaningrepasta.html">Cleaning Repasta</a></li>
+        </ul>
+      </div>
+
+      <!-- Section Bantuan -->
+      <div class="footer-bantuan-section">
+        <h4>Bantuan</h4>
+        <ul>
+          <li><a href="../syaratketentuan.html">Syarat & Ketentuan</a></li>
+          <li><a href="../konsultasi.html">Konsultasi</a></li>
+          <li><a href="../pertanyaan.html">Pertanyaan</a></li>
+        </ul>
+      </div>
+
+      <!-- Section Sosmed -->
+      <div class="footer-sosmed-section">
+        <h4>Ikuti Kami</h4>
+
+        <div class="sosmedfooter-container">
+          <a href="https://instagram.com/rafiajastore" target="_blank" class="sosmed-icons">  
+            <i class="bi bi-instagram social-icon"></i>
+          </a>
+
+          <a href="https://api.whatsapp.com/send/?phone=6285954395248"
+             target="_blank" class="sosmed-icons">
+            <i class="bi bi-whatsapp social-icon"></i>
+          </a>
+
+          <a href="#" target="_blank" class="sosmed-icons">
+            <i class="bi bi-facebook social-icon"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-copyright">
+      ©2026 Samoro Repair. All rights reserved.
+    </div>
+  </footer>
 
 
 <!-- Navigation-->
@@ -165,28 +362,3 @@
 </div>
 
 
-<div id="footer-placeholder"></div>
-
-
-<script>// load navbar
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(data => {
-    const nav = document.getElementById("navbar-placeholder");
-    if (nav) nav.innerHTML = data;
-  });
-
-// load footer
-fetch("/footer.html")
-  .then(res => res.text())
-  .then(data => {
-    const foot = document.getElementById("footer-placeholder");
-    if (foot) foot.innerHTML = data;
-  });
-</script>
-
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
-<script src="js/custom.js"></script>

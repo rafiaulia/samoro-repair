@@ -8,62 +8,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ── Variables ──────────────────────────────────── */
-:root {
-  --adm-blue-700 : #1D4ED8;
-  --adm-blue-600 : #2563EB;
-  --adm-blue-500 : #3B82F6;
-  --adm-blue-200 : #BFDBFE;
-  --adm-blue-100 : #DBEAFE;
-  --adm-blue-50  : #EFF6FF;
 
-  --adm-gray-900 : #0F172A;
-  --adm-gray-800 : #1E293B;
-  --adm-gray-700 : #334155;
-  --adm-gray-600 : #475569;
-  --adm-gray-500 : #64748B;
-  --adm-gray-400 : #94A3B8;
-  --adm-gray-300 : #CBD5E1;
-  --adm-gray-200 : #E2E8F0;
-  --adm-gray-100 : #F1F5F9;
-  --adm-gray-50  : #F8FAFC;
-
-  --adm-green-600 : #16A34A;
-  --adm-green-100 : #DCFCE7;
-  --adm-green-50  : #F0FDF4;
-
-  --adm-yellow-600: #CA8A04;
-  --adm-yellow-100: #FEF9C3;
-  --adm-yellow-50 : #FEFCE8;
-
-  --adm-purple-600: #9333EA;
-  --adm-purple-100: #F3E8FF;
-  --adm-purple-50 : #FAF5FF;
-
-  --adm-red-600  : #DC2626;
-  --adm-red-100  : #FEE2E2;
-  --adm-red-50   : #FFF1F2;
-
-  --adm-shadow-xs : 0 1px 2px rgba(0,0,0,0.05);
-  --adm-shadow-sm : 0 1px 3px rgba(0,0,0,0.08);
-  --adm-shadow-md : 0 4px 6px -1px rgba(0,0,0,0.07);
-  --adm-shadow-lg : 0 10px 15px -3px rgba(0,0,0,0.07);
-  --adm-shadow-xl : 0 20px 25px -5px rgba(0,0,0,0.08);
-  --adm-shadow-blue: 0 4px 14px rgba(37,99,235,0.28);
-
-  --adm-radius-xs  : 4px;
-  --adm-radius-sm  : 8px;
-  --adm-radius-md  : 12px;
-  --adm-radius-lg  : 16px;
-  --adm-radius-xl  : 20px;
-  --adm-radius-2xl : 28px;
-  --adm-radius-full: 9999px;
-
-  --adm-transition: all 0.18s ease;
+/* ── Lebarkan container admin ── */
+#adm-dashboard-section .container {
+  max-width: 1700px !important;
 }
+
 
 /* ── Page ───────────────────────────────────────── */
 .adm-page { 
-  background: var(--adm-gray-50); 
+  background: var(--bg-page); 
   min-height: 100vh; 
   font-family: 'Poppins', sans-serif;
 }
@@ -81,17 +35,17 @@
   display: grid;
   place-items: center;
   padding: 2rem;
-  background: var(--adm-gray-50);
+  background: var(--bg-page);
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(37,99,235,0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(99,102,241,0.04) 0%, transparent 50%);
+    radial-gradient(circle at 20% 20%, var(--blue-50) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, var(--blue-50) 0%, transparent 50%);
 }
 
 .adm-login-card {
-  background: #fff;
-  border-radius: var(--adm-radius-2xl);
-  border: 1px solid var(--adm-gray-200);
-  box-shadow: var(--adm-shadow-xl);
+  background: var(--bg-card);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-xl);
   padding: 2.5rem 2.25rem;
   width: 100%;
   max-width: 420px;
@@ -106,9 +60,9 @@
   place-items: center;
   width: 64px;
   height: 64px;
-  background: var(--adm-blue-50);
-  border: 1.5px solid var(--adm-blue-200);
-  border-radius: var(--adm-radius-lg);
+  background: var(--blue-50);
+  border: 1.5px solid var(--blue-200);
+  border-radius: var(--radius-lg);
   margin: 0 auto 0.875rem;
 }
 
@@ -117,12 +71,12 @@
   font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.06em;
-  color: var(--adm-gray-900);
+  color: var(--text-primary);
 }
 
 .adm-login-sub {
   font-size: 0.78rem;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -131,7 +85,7 @@
 
 .adm-login-divider {
   height: 1px;
-  background: var(--adm-gray-100);
+  background: var(--border-subtle);
   margin-bottom: 1.5rem;
 }
 
@@ -140,18 +94,17 @@
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.82rem;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   font-weight: 500;
-  transition: var(--adm-transition);
+  transition: var(--transition);
   text-decoration: none;
 }
-.adm-back-link:hover { color: var(--adm-blue-600); }
 
 /* ── Form Elements ──────────────────────────────── */
 .adm-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--adm-gray-700);
+  color: var(--text-primary);
   margin-bottom: 0.375rem;
   display: block;
 }
@@ -159,31 +112,31 @@
 .adm-input {
   width: 100%;
   padding: 0.625rem 0.875rem;
-  border: 1.5px solid var(--adm-gray-200);
-  border-radius: var(--adm-radius-sm);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
-  color: var(--adm-gray-900);
-  background: #fff;
-  transition: var(--adm-transition);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  transition: var(--transition);
   outline: none;
   line-height: 1.5;
 }
 
-.adm-input::placeholder { color: var(--adm-gray-300); }
+.adm-input::placeholder { color: var(--text-placeholder); }
 
 .adm-input:focus {
-  border-color: var(--adm-blue-500);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px var(--blue-200);
 }
 
 .adm-input[readonly] {
-  background: var(--adm-gray-50);
-  color: var(--adm-gray-500);
+  background: var(--bg-input-ro);
+  color: var(--text-disabled);
   cursor: default;
 }
 .adm-input[readonly]:focus {
   box-shadow: none;
-  border-color: var(--adm-gray-200);
+  border-color: var(--border-default);
 }
 
 .adm-input-resi {
@@ -214,12 +167,12 @@ select.adm-input {
   justify-content: center;
   gap: 0.375rem;
   padding: 0.55rem 1.2rem;
-  border-radius: var(--adm-radius-sm);
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 600;
   border: 1.5px solid transparent;
   cursor: pointer;
-  transition: var(--adm-transition);
+  transition: var(--transition);
   white-space: nowrap;
   line-height: 1.4;
   background: none;
@@ -228,58 +181,58 @@ select.adm-input {
 .adm-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .adm-btn-primary {
-  background: var(--adm-blue-600);
-  color: #fff;
-  border-color: var(--adm-blue-600);
+  background: var(--blue-600);
+  color: var(--white);
+  border-color: var(--blue-600);
 }
 .adm-btn-primary:hover:not(:disabled) {
-  background: var(--adm-blue-700);
+  background: var(--blue-700);
   transform: translateY(-1px);
-  box-shadow: var(--adm-shadow-blue);
+  box-shadow: var(--shadow-blue);
 }
 
 .adm-btn-secondary {
-  background: #fff;
-  color: var(--adm-gray-700);
-  border-color: var(--adm-gray-200);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border-default);
 }
 .adm-btn-secondary:hover:not(:disabled) {
-  background: var(--adm-gray-50);
-  border-color: var(--adm-gray-300);
+  background: var(--bg-table-head);
+  border-color: var(--border-strong);
 }
 
 .adm-btn-ghost {
   background: transparent;
-  color: var(--adm-gray-500);
-  border-color: var(--adm-gray-200);
+  color: var(--text-muted);
+  border-color: var(--border-default);
 }
 .adm-btn-ghost:hover:not(:disabled) {
-  background: var(--adm-gray-100);
-  color: var(--adm-gray-700);
+  background: var(--bg-table-head);
+  color: var(--text-secondary);
 }
 
 .adm-btn-danger {
-  background: var(--adm-red-50);
-  color: var(--adm-red-600);
-  border-color: var(--adm-red-100);
+  background: var(--red-50);
+  color: var(--red-600);
+  border-color: var(--red-100);
 }
 .adm-btn-danger:hover:not(:disabled) {
-  background: var(--adm-red-600);
-  color: #fff;
+  background: var(--red-600);
+  color: var(--white);
 }
 
 .adm-btn-full { width: 100%; padding: 0.75rem 1.5rem; font-size: 0.95rem; }
-.adm-btn-sm   { padding: 0.3rem 0.65rem; font-size: 0.78rem; border-radius: var(--adm-radius-xs); }
+.adm-btn-sm   { padding: 0.3rem 0.65rem; font-size: 0.78rem; border-radius: var(--radius-xs); }
 
 /* ── Error / Toast ──────────────────────────────── */
 .adm-error {
-  color: var(--adm-red-600);
+  color: var(--red-600);
   font-size: 0.82rem;
   font-weight: 500;
-  background: var(--adm-red-50);
+  background: var(--red-50);
   padding: 0.5rem 0.75rem;
-  border-radius: var(--adm-radius-sm);
-  border: 1px solid var(--adm-red-100);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--red-100);
   display: none;
 }
 .adm-error.adm-visible { display: block; }
@@ -289,25 +242,25 @@ select.adm-input {
   bottom: 1.75rem;
   right: 1.75rem;
   padding: 0.75rem 1.25rem;
-  border-radius: var(--adm-radius-md);
+  border-radius: var(--radius-md);
   font-size: 0.875rem;
   font-weight: 600;
-  box-shadow: var(--adm-shadow-xl);
+  box-shadow: var(--shadow-xl);
   z-index: 9999;
   max-width: 320px;
   display: none;
   animation: admFadeUp 0.3s ease;
 }
 .adm-toast.adm-visible    { display: block; }
-.adm-toast.adm-toast-ok  { background: var(--adm-gray-900); color: #fff; }
-.adm-toast.adm-toast-err { background: var(--adm-red-600);  color: #fff; }
+.adm-toast.adm-toast-ok  { background: var(--gray-900); color: var(--white); }
+.adm-toast.adm-toast-err { background: var(--red-600);  color: var(--white); }
 
 /* ── Cards ──────────────────────────────────────── */
 .adm-card {
-  background: #fff;
-  border-radius: var(--adm-radius-xl);
-  border: 1px solid var(--adm-gray-200);
-  box-shadow: var(--adm-shadow-sm);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-sm);
   padding: 1.625rem;
   margin-bottom: 1.5rem;
 }
@@ -320,32 +273,32 @@ select.adm-input {
   gap: 0.75rem;
   margin-bottom: 1.375rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--adm-gray-100);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .adm-card-title {
   font-family: 'Outfit', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--adm-gray-900);
+  color: var(--text-primary);
   margin: 0;
 }
 
 /* ── Stats ──────────────────────────────────────── */
 .adm-stat-card {
-  background: #fff;
-  border-radius: var(--adm-radius-md);
-  border: 1px solid var(--adm-gray-200);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
   padding: 1rem 1.125rem;
-  box-shadow: var(--adm-shadow-xs);
-  transition: var(--adm-transition);
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
 }
-.adm-stat-card:hover { box-shadow: var(--adm-shadow-sm); transform: translateY(-1px); }
+.adm-stat-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
 
 .adm-stat-label {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.07em;
   margin-bottom: 0.375rem;
@@ -356,28 +309,28 @@ select.adm-input {
   font-size: 1.875rem;
   font-weight: 900;
   line-height: 1;
-  color: var(--adm-blue-600);
+  color: var(--blue-600);
 }
 
 /* ── Resi code di tabel ─────────────────────────── */
 .adm-resi-code {
   font-family: 'Outfit', sans-serif;
-  background: var(--adm-blue-50);
+  background: var(--blue-50);
   padding: 0.25rem 0.5rem;
-  border-radius: var(--adm-radius-xs);
+  border-radius: var(--radius-xs);
   font-size: 0.82rem;
   font-weight: 800;
-  color: var(--adm-blue-700);
+  color: var(--blue-700);
   white-space: nowrap;
   letter-spacing: 0.05em;
-  border: 1px solid var(--adm-blue-100);
+  border: 1px solid var(--blue-100);
 }
 
 /* ── Tabel ──────────────────────────────────────── */
 .adm-table-wrap {
   overflow-x: auto;
-  border-radius: var(--adm-radius-md);
-  border: 1px solid var(--adm-gray-100);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
 }
 
 .adm-table {
@@ -387,35 +340,35 @@ select.adm-input {
   min-width: 720px;
 }
 
-.adm-table thead tr { background: var(--adm-gray-50); }
+.adm-table thead tr { background: var(--bg-table-head); }
 
 .adm-table th {
   text-align: left;
   padding: 0.75rem 1rem;
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   white-space: nowrap;
-  border-bottom: 1.5px solid var(--adm-gray-200);
+  border-bottom: 1.5px solid var(--border-default);
 }
 
 .adm-table td {
   padding: 0.875rem 1rem;
-  border-bottom: 1px solid var(--adm-gray-100);
+  border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
-  color: var(--adm-gray-700);
+  color: var(--text-secondary);
 }
 
 .adm-table tbody tr { transition: background 0.12s; }
-.adm-table tbody tr:hover { background: var(--adm-gray-50); }
+.adm-table tbody tr:hover { background: var(--bg-table-head); }
 .adm-table tbody tr:last-child td { border-bottom: none; }
 
 /* ── Status dropdown di tabel ───────────────────── */
 .adm-status-select {
   padding: 0.3rem 0.625rem;
-  border-radius: var(--adm-radius-full);
+  border-radius: var(--radius-full);
   font-size: 0.72rem;
   font-weight: 700;
   border: 1.5px solid;
@@ -424,21 +377,21 @@ select.adm-input {
   min-width: 148px;
   text-align: center;
   font-family: inherit;
-  transition: var(--adm-transition);
+  transition: var(--transition);
   background-image: none;
 }
-.adm-status-select:focus { outline: none; box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
+.adm-status-select:focus { outline: none; box-shadow: 0 0 0 2px var(--blue-200); }
 
-.adm-status-blue   { background: var(--adm-blue-50);   color: var(--adm-blue-700);   border-color: var(--adm-blue-200); }
-.adm-status-yellow { background: var(--adm-yellow-50); color: var(--adm-yellow-600); border-color: var(--adm-yellow-100); }
-.adm-status-purple { background: var(--adm-purple-50); color: var(--adm-purple-600); border-color: var(--adm-purple-100); }
-.adm-status-green  { background: var(--adm-green-50);  color: var(--adm-green-600);  border-color: var(--adm-green-100); }
+.adm-status-blue   { background: var(--blue-50);   color: var(--blue-700);   border-color: var(--blue-200); }
+.adm-status-yellow { background: var(--yellow-50); color: var(--yellow-600); border-color: var(--yellow-100); }
+.adm-status-purple { background: var(--purple-50); color: var(--purple-600); border-color: var(--purple-100); }
+.adm-status-green  { background: var(--green-50);  color: var(--green-600);  border-color: var(--green-100); }
 
 /* ── Empty & Loading ────────────────────────────── */
 .adm-empty {
   text-align: center;
   padding: 3.5rem;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   font-size: 0.875rem;
   line-height: 1.7;
 }
@@ -449,7 +402,7 @@ select.adm-input {
   align-items: center;
   gap: 0.875rem;
   padding: 3.5rem;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 .adm-loading.adm-visible { display: flex; }
@@ -457,8 +410,8 @@ select.adm-input {
 .adm-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid var(--adm-gray-200);
-  border-top-color: var(--adm-blue-600);
+  border: 3px solid var(--border-default);
+  border-top-color: var(--blue-600);
   border-radius: 50%;
   animation: admSpin 0.75s linear infinite;
 }
@@ -481,27 +434,27 @@ select.adm-input {
 
 .adm-btn-copy {
   background: none;
-  border: 1px solid var(--adm-gray-200);
-  border-radius: var(--adm-radius-xs);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xs);
   padding: 0.2rem 0.3rem;
   cursor: pointer;
-  color: var(--adm-gray-400);
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
-  transition: var(--adm-transition);
+  transition: var(--transition);
   line-height: 1;
 }
-.adm-btn-copy:hover { color: var(--adm-blue-600); border-color: var(--adm-blue-200); background: var(--adm-blue-50); }
+.adm-btn-copy:hover { color: var(--blue-600); border-color: var(--blue-200); background: var(--blue-50); }
 
 /* ── Cetak Nota — Print styles ────────────────── */
 .adm-btn-print {
-  background: var(--adm-green-50);
-  color: var(--adm-green-600);
-  border-color: var(--adm-green-100);
+  background: var(--green-50);
+  color: var(--green-600);
+  border-color: var(--green-100);
 }
 .adm-btn-print:hover:not(:disabled) {
-  background: var(--adm-green-600);
-  color: #fff;
+  background: var(--green-600);
+  color: var(--white);
 }
 
 @media print {
@@ -513,7 +466,7 @@ select.adm-input {
     position: fixed;
     inset: 0;
     padding: 2rem;
-    background: #fff;
+    background: var(--white);
     z-index: 99999;
     font-family: 'Outfit', sans-serif;
   }
@@ -523,7 +476,7 @@ select.adm-input {
 .adm-nota-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--bg-overlay);
   z-index: 9000;
   display: none;
   align-items: center;
@@ -533,9 +486,9 @@ select.adm-input {
 .adm-nota-overlay.adm-visible { display: flex; }
 
 .adm-nota-modal {
-  background: #fff;
-  border-radius: var(--adm-radius-xl);
-  box-shadow: var(--adm-shadow-xl);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
@@ -547,13 +500,13 @@ select.adm-input {
 .adm-nota-wrap {
   padding: 2rem;
   font-size: 0.875rem;
-  color: var(--adm-gray-900);
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
 .adm-nota-header {
   text-align: center;
-  border-bottom: 2px dashed var(--adm-gray-200);
+  border-bottom: 2px dashed var(--border-default);
   padding-bottom: 1.25rem;
   margin-bottom: 1.25rem;
 }
@@ -563,24 +516,24 @@ select.adm-input {
   font-size: 1.4rem;
   font-weight: 900;
   letter-spacing: 0.06em;
-  color: var(--adm-blue-700);
+  color: var(--blue-700);
 }
 
 .adm-nota-sub {
   font-size: 18px;
-  color: black;
+  color: var(--text-primary);
   margin-top: 5px;
 }
 .adm-nota-alamat {
   font-size: 18px;
-  color: black;
+  color: var(--text-primary);
   margin-top: 5px;
 }
 .adm-nota-resi {
   margin: 1rem 0;
-  background: white;
-  border: 1.5px dashed var(--adm-blue-200);
-  border-radius: var(--adm-radius-sm);
+  background: var(--bg-card);
+  border: 1.5px dashed var(--blue-200);
+  border-radius: var(--radius-sm);
   padding: 0.75rem;
   text-align: center;
 }
@@ -589,7 +542,7 @@ select.adm-input {
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: black;
+  color: var(--text-primary);
   font-weight: 700;
 }
 
@@ -597,7 +550,7 @@ select.adm-input {
   font-family: 'Outfit', sans-serif;
   font-size: 30px;
   font-weight: 600;
-  color: var(--adm-blue-700);
+  color: var(--blue-700);
   letter-spacing: 0.05em;
 }
 
@@ -606,13 +559,13 @@ select.adm-input {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--adm-gray-100);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .adm-nota-row:last-of-type { border-bottom: none; }
 
 .adm-nota-key {
   font-size: 18px;
-  color: black;
+  color: var(--text-primary);
   font-weight: 600;
   flex-shrink: 0;
   min-width: 110px;
@@ -621,14 +574,14 @@ select.adm-input {
 .adm-nota-val {
   font-weight: 600;
   text-align: right;
-  color: var(--adm-gray-800);
+  color: var(--text-secondary);
   font-size: 18px;
 }
 
 .adm-nota-status {
   display: inline-block;
   padding: 0.2rem 0.75rem;
-  border-radius: var(--adm-radius-full);
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 700;
   border: 1.5px solid;
@@ -638,10 +591,10 @@ select.adm-input {
 .adm-nota-footer {
   margin-top: 1.25rem;
   padding-top: 1rem;
-  border-top: 2px dashed var(--adm-gray-200);
+  border-top: 2px dashed var(--border-default);
   text-align: center;
   font-size: 18px;
-  color: black;
+  color: var(--text-primary);
   line-height: 1.8;
 }
 
@@ -650,5 +603,6 @@ select.adm-input {
   display: flex;
   gap: 0.625rem;
   justify-content: flex-end;
-  border-top: 1px solid var(--adm-gray-100);
+  border-top: 1px solid var(--border-subtle);
 }
+

@@ -10,11 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
   <!-- CSS lama -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/biaya.css">
+  <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/variables.css">
   <!-- CSS pesanan — load TERAKHIR -->
   <link rel="stylesheet" href="css/pesanan.css">
 
@@ -258,7 +260,29 @@
 
     </div>
   </div>
-
+<!-- Modal Timeline -->
+<div id="tl-overlay" class="tl-overlay" onclick="tlTutupModal(event)">
+  <div class="tl-modal">
+    <div class="tl-modal-header">
+      <div>
+        <h2 class="tl-modal-title">⏱️ Timeline Status</h2>
+        <p class="tl-modal-meta">
+          <span id="tl-modal-nama"></span> —
+          <span id="tl-modal-device"></span>
+        </p>
+      </div>
+      <button class="tl-modal-close" onclick="tlTutupModal()">✕</button>
+    </div>
+    <div class="tl-resi-badge">
+      <span class="tl-resi-label">No. Resi</span>
+      <span class="tl-resi-val" id="tl-modal-resi"></span>
+    </div>
+    <div class="tl-timeline-wrap" id="tl-timeline-wrap"></div>
+    <div class="tl-modal-footer">
+      <button class="tl-close-btn" onclick="tlTutupModal()">Tutup</button>
+    </div>
+  </div>
+</div>
   <!-- Toast -->
   <div id="pes-toast" class="pes-toast"></div>
 <!-- Modal Nota Biaya -->
@@ -323,12 +347,14 @@
 <!-- Area print tersembunyi -->
 <div id="biaya-print-area" style="display:none;"></div>
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script src="js/scripts.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/biaya.js"></script>
   <!-- Script pesanan — TERAKHIR -->
+   <script src="js/timeline.js"></script>
   <script src="js/pesanan.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 </body>
 </html>

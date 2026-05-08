@@ -2,13 +2,14 @@
    RAS-REPAIR — biaya.css
    Nota Biaya — prefix "biaya-"
    Dipakai di admin.html dan pesanan.html
+   Requires: variables.css
    ================================================ */
 
 /* ── Modal Overlay ──────────────────────────────── */
 .biaya-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--bg-overlay);
   z-index: 9200;
   display: none;
   align-items: center;
@@ -18,9 +19,9 @@
 .biaya-overlay.biaya-visible { display: flex; }
 
 .biaya-modal {
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 580px;
   max-height: 92vh;
@@ -41,25 +42,25 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
-  background: #fff;
+  background: var(--bg-card);
   z-index: 1;
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .biaya-modal-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .biaya-modal-resi {
   font-size: 0.75rem;
-  color: #94A3B8;
+  color: var(--text-disabled);
   font-weight: 500;
   margin-top: 0.15rem;
 }
@@ -68,39 +69,39 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #94A3B8;
+  color: var(--text-disabled);
   font-size: 1.25rem;
   line-height: 1;
   padding: 0.25rem;
-  border-radius: 4px;
-  transition: all 0.15s;
+  border-radius: var(--radius-xs);
+  transition: var(--transition);
 }
-.biaya-modal-close:hover { color: #334155; background: #F1F5F9; }
+.biaya-modal-close:hover { color: var(--text-secondary); background: var(--gray-100); }
 
 /* ── Tab dalam modal (Input / Preview) ─────────── */
 .biaya-tab-wrap {
   display: flex;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid var(--border-subtle);
   padding: 0 1.5rem;
-  background: #fff;
+  background: var(--bg-card);
 }
 
 .biaya-tab {
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #64748B;
+  color: var(--text-muted);
   cursor: pointer;
   border: none;
   background: none;
   border-bottom: 2.5px solid transparent;
   margin-bottom: -1px;
-  transition: all 0.15s;
+  transition: var(--transition);
 }
-.biaya-tab:hover { color: #334155; }
+.biaya-tab:hover { color: var(--text-secondary); }
 .biaya-tab.biaya-tab-active {
-  color: #2563EB;
-  border-bottom-color: #2563EB;
+  color: var(--blue-600);
+  border-bottom-color: var(--blue-600);
   font-weight: 700;
 }
 
@@ -119,24 +120,23 @@
 
 .biaya-item-input {
   padding: 0.55rem 0.75rem;
-  border: 1.5px solid #E2E8F0;
-  border-radius: 8px;
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-sm);
   font-size: 0.85rem;
-  color: #0F172A;
-  background: #fff;
+  color: var(--text-primary);
+  background: var(--bg-input);
   outline: none;
-  transition: all 0.15s;
+  transition: var(--transition);
   width: 100%;
 }
-.biaya-item-input::placeholder { color: #CBD5E1; }
+.biaya-item-input::placeholder { color: var(--text-placeholder); }
 .biaya-item-input:focus {
-  border-color: #3B82F6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px var(--blue-100);
 }
 
-/* Input harga — format Rupiah */
 .biaya-item-input.biaya-harga {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -146,33 +146,33 @@
   grid-template-columns: 1fr 80px 120px 36px;
   gap: 0.5rem;
   padding-bottom: 0.375rem;
-  border-bottom: 1.5px solid #F1F5F9;
+  border-bottom: 1.5px solid var(--border-subtle);
   margin-bottom: 0.25rem;
 }
 
 .biaya-item-header span {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #94A3B8;
+  color: var(--text-disabled);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 
 .biaya-del-btn {
-  background: #FFF1F2;
-  border: 1.5px solid #FEE2E2;
+  background: var(--red-50);
+  border: 1.5px solid var(--red-100);
   border-radius: 6px;
   cursor: pointer;
-  color: #DC2626;
+  color: var(--red-600);
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
-  transition: all 0.15s;
+  transition: var(--transition);
   font-size: 0.9rem;
   flex-shrink: 0;
 }
-.biaya-del-btn:hover { background: #DC2626; color: #fff; }
+.biaya-del-btn:hover { background: var(--red-600); color: #fff; }
 
 .biaya-add-btn {
   display: inline-flex;
@@ -180,26 +180,26 @@
   gap: 0.4rem;
   margin-top: 0.5rem;
   padding: 0.5rem 0.875rem;
-  background: #EFF6FF;
-  border: 1.5px dashed #BFDBFE;
-  border-radius: 8px;
-  color: #2563EB;
+  background: var(--blue-50);
+  border: 1.5px dashed var(--blue-200);
+  border-radius: var(--radius-sm);
+  color: var(--blue-600);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: var(--transition);
   width: 100%;
   justify-content: center;
 }
-.biaya-add-btn:hover { background: #DBEAFE; border-color: #3B82F6; }
+.biaya-add-btn:hover { background: var(--blue-100); border-color: var(--blue-500); }
 
 /* ── Total Box ──────────────────────────────────── */
 .biaya-total-wrap {
   margin-top: 1.25rem;
   padding: 1rem 1.25rem;
-  background: #F8FAFC;
-  border-radius: 12px;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-table-head);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -208,53 +208,57 @@
 .biaya-total-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #64748B;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 
 .biaya-total-val {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 900;
-  color: #1D4ED8;
+  color: var(--blue-700);
 }
 
 /* ── Nota Preview ───────────────────────────────── */
 .biaya-preview-wrap {
   font-size: 0.875rem;
-  color: #0F172A;
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
 .biaya-preview-header {
   text-align: center;
-  border-bottom: 2px dashed #E2E8F0;
+  border-bottom: 2px dashed var(--border-default);
   padding-bottom: 1.25rem;
   margin-bottom: 1.25rem;
 }
 
 .biaya-preview-brand {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 900;
   letter-spacing: 0.06em;
-  color: #1D4ED8;
+  color: var(--blue-700);
 }
 
 .biaya-preview-alamat {
   font-size: 0.72rem;
-  color: #64748B;
+  color: var(--text-muted);
   margin-top: 0.3rem;
   line-height: 1.5;
 }
 
-.biaya-preview-sub { font-size: 0.75rem; color: #94A3B8; margin-top: 0.2rem; }
+.biaya-preview-sub {
+  font-size: 0.75rem;
+  color: var(--text-disabled);
+  margin-top: 0.2rem;
+}
 
 .biaya-preview-resi {
-  background: #EFF6FF;
-  border: 1.5px dashed #BFDBFE;
-  border-radius: 8px;
+  background: var(--blue-50);
+  border: 1.5px dashed var(--blue-200);
+  border-radius: var(--radius-sm);
   padding: 0.75rem;
   text-align: center;
   margin-bottom: 1.25rem;
@@ -264,15 +268,15 @@
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #94A3B8;
+  color: var(--text-disabled);
   font-weight: 700;
 }
 
 .biaya-preview-resi-val {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 900;
-  color: #1D4ED8;
+  color: var(--blue-700);
   letter-spacing: 0.05em;
 }
 
@@ -285,7 +289,7 @@
 }
 
 .biaya-preview-table thead tr {
-  background: #F8FAFC;
+  background: var(--bg-table-head);
 }
 
 .biaya-preview-table th {
@@ -293,10 +297,10 @@
   text-align: left;
   font-size: 0.68rem;
   font-weight: 700;
-  color: #94A3B8;
+  color: var(--text-disabled);
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  border-bottom: 1.5px solid #E2E8F0;
+  border-bottom: 1.5px solid var(--border-default);
 }
 
 .biaya-preview-table th:last-child,
@@ -304,8 +308,8 @@
 
 .biaya-preview-table td {
   padding: 0.625rem 0.75rem;
-  border-bottom: 1px solid #F1F5F9;
-  color: #334155;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   vertical-align: middle;
 }
 
@@ -317,34 +321,34 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.875rem 0.75rem;
-  background: #EFF6FF;
-  border-radius: 8px;
-  border: 1px solid #BFDBFE;
+  background: var(--blue-50);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--blue-200);
   margin-top: 0.5rem;
 }
 
 .biaya-preview-total-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #2563EB;
+  color: var(--blue-600);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .biaya-preview-total-val {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display);
   font-size: 1.375rem;
   font-weight: 900;
-  color: #1D4ED8;
+  color: var(--blue-700);
 }
 
 .biaya-preview-footer {
   margin-top: 1.25rem;
   padding-top: 1rem;
-  border-top: 2px dashed #E2E8F0;
+  border-top: 2px dashed var(--border-default);
   text-align: center;
   font-size: 0.75rem;
-  color: #94A3B8;
+  color: var(--text-disabled);
   line-height: 1.8;
 }
 
@@ -354,7 +358,7 @@
   justify-content: flex-end;
   gap: 0.625rem;
   padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid #F1F5F9;
+  border-top: 1px solid var(--border-subtle);
   flex-wrap: wrap;
 }
 
@@ -365,12 +369,12 @@
   justify-content: center;
   gap: 0.35rem;
   padding: 0.55rem 1.1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 600;
   border: 1.5px solid transparent;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: var(--transition);
   white-space: nowrap;
   background: none;
   line-height: 1.4;
@@ -378,35 +382,41 @@
 .biaya-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .biaya-btn-primary {
-  background: #2563EB; color: #fff; border-color: #2563EB;
+  background: var(--blue-600);
+  color: #fff;
+  border-color: var(--blue-600);
 }
 .biaya-btn-primary:hover:not(:disabled) {
-  background: #1D4ED8;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.28);
+  background: var(--blue-700);
+  box-shadow: var(--shadow-blue);
   transform: translateY(-1px);
 }
 
 .biaya-btn-secondary {
-  background: #fff; color: #334155; border-color: #E2E8F0;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border-default);
 }
-.biaya-btn-secondary:hover:not(:disabled) { background: #F8FAFC; }
+.biaya-btn-secondary:hover:not(:disabled) { background: var(--bg-table-head); }
 
 .biaya-btn-ghost {
-  background: transparent; color: #64748B; border-color: #E2E8F0;
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border-default);
 }
-.biaya-btn-ghost:hover:not(:disabled) { background: #F1F5F9; color: #334155; }
+.biaya-btn-ghost:hover:not(:disabled) { background: var(--gray-100); color: var(--text-secondary); }
 
-.biaya-btn-sm { padding: 0.3rem 0.65rem; font-size: 0.78rem; border-radius: 4px; }
+.biaya-btn-sm { padding: 0.3rem 0.65rem; font-size: 0.78rem; border-radius: var(--radius-xs); }
 
 /* ── Error ──────────────────────────────────────── */
 .biaya-error {
-  color: #DC2626;
+  color: var(--red-600);
   font-size: 0.82rem;
   font-weight: 500;
-  background: #FFF1F2;
+  background: var(--red-50);
   padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  border: 1px solid #FEE2E2;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--red-100);
   display: none;
   margin-top: 0.75rem;
 }
@@ -427,9 +437,7 @@
 
 /* ── Responsive ─────────────────────────────────── */
 @media (max-width: 520px) {
-  .biaya-item-row {
-    grid-template-columns: 1fr 60px 100px 36px;
-  }
+  .biaya-item-row { grid-template-columns: 1fr 60px 100px 36px; }
   .biaya-modal-footer { justify-content: stretch; }
   .biaya-btn { flex: 1; justify-content: center; }
 }

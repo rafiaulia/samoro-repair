@@ -1,0 +1,197 @@
+/* ================================================
+   RAS-REPAIR — variables.css
+   Design Tokens — Single Source of Truth
+   Load file ini PERTAMA di semua halaman HTML
+   ================================================
+
+   CARA PAKAI DI FILE CSS LAIN:
+   Hapus semua blok :root { ... } di tiap file,
+   ganti semua var(--adm-blue-600) → var(--blue-600)
+   ganti semua var(--pes-gray-900) → var(--gray-900)
+   dst (hilangkan prefix adm-, pes-, lacak-, dll)
+   ================================================ */
+
+/* ================================================
+   🌤️  LIGHT MODE (default)
+   ================================================ */
+:root {
+  /* ── Blue ──────────────────────────────────────── */
+  /* ── Primary (Indigo Violet) ───────────────────── */
+  --blue-900: #1e1657;
+  --blue-700: #3d35cc;
+  --blue-600: #6c63ff;
+  --blue-500: #8b84ff;
+  --blue-400: #a9a4ff;
+  --blue-200: #c8c5ff;
+  --blue-100: #e0deff;
+  --blue-50: #f0efff;
+
+  /* ── Gray ───────────────────────────────────────── */
+  --gray-950: #020617;
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+  --white: #ffffff;
+
+  /* ── Green ──────────────────────────────────────── */
+  --green-700: #15803d;
+  --green-600: #16a34a;
+  --green-500: #22c55e;
+  --green-400: #4ade80;
+  --green-100: #dcfce7;
+  --green-50: #f0fdf4;
+
+  /* ── Yellow ─────────────────────────────────────── */
+  --yellow-700: #a16207;
+  --yellow-600: #ca8a04;
+  --yellow-500: #eab308;
+  --yellow-100: #fef9c3;
+  --yellow-50: #fefce8;
+
+  /* ── Purple ─────────────────────────────────────── */
+  --purple-700: #7e22ce;
+  --purple-600: #9333ea;
+  --purple-500: #a855f7;
+  --purple-100: #f3e8ff;
+  --purple-50: #faf5ff;
+
+  /* ── Red ────────────────────────────────────────── */
+  --red-700: #b91c1c;
+  --red-600: #dc2626;
+  --red-500: #ef4444;
+  --red-100: #fee2e2;
+  --red-50: #fff1f2;
+
+  /* ── Semantic Colors ────────────────────────────── */
+  /* Dipakai untuk background halaman, card, border  */
+  --bg-page: var(--gray-50);
+  --bg-card: var(--white);
+  --bg-input: var(--white);
+  --bg-input-ro: var(--gray-50); /* readonly input */
+  --bg-table-head: var(--gray-50);
+  --bg-overlay: rgba(0, 0, 0, 0.48);
+
+  --border-default: var(--gray-200);
+  --border-strong: var(--gray-300);
+  --border-subtle: var(--gray-100);
+
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --text-muted: var(--gray-500);
+  --text-placeholder: var(--gray-300);
+  --text-disabled: var(--gray-400);
+
+  /* ── Shadows ────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-blue: 0 4px 14px rgba(108, 99, 255, 0.35);
+
+  /* ── Border Radius ──────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* ── Typography ─────────────────────────────────── */
+  --font-display: "Outfit", "Poppins", sans-serif;
+  --font-body: "Poppins", system-ui, -apple-system, sans-serif;
+
+  /* ── Transition ─────────────────────────────────── */
+  --transition: all 0.18s ease;
+  --transition-slow: all 0.35s ease;
+  /* ── Navbar ─────────────────────────────────────── */
+  --navnew-accent: #6c5ce7;
+  --navnew-accent-lt: #ede9fe;
+  --navnew-text: #1a1a2e;
+  --navnew-muted: #6b7280;
+  --navnew-border: rgba(108, 92, 231, 0.12);
+  --navnew-radius: 999px;
+  --navnew-max: 1440px;
+  --navnew-h: 68px;
+  --navnew-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* ── Orange ─────────────────────────────────────── */
+  --orange-500: #ff8a00;
+  --orange-600: #e67e00;
+  /* ── Container ─────────────────────────────────────── */
+  --container-px: 20px;
+  /* ── Section ─────────────────────────────────────── */
+  --section-py: 60px;
+}
+
+/* ================================================
+   🌙 DARK MODE
+   Otomatis aktif jika sistem user pakai dark mode.
+   Override semantic colors saja — warna primitif
+   (--blue-600, --red-500, dll) tetap sama.
+   ================================================ */
+:root[data-theme="dark"] {
+  /* ── Background ─────────────────────────────── */
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --bg-input: #1e293b;
+  --bg-input-ro: #0f172a;
+  --bg-table-head: #162032;
+  --bg-overlay: rgba(0, 0, 0, 0.65);
+
+  /* ── Border ─────────────────────────────────── */
+  --border-default: #334155;
+  --border-strong: #475569;
+  --border-subtle: #1e293b;
+
+  /* ── Text ───────────────────────────────────── */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-placeholder: #475569;
+  --text-disabled: #64748b;
+
+  /* ── Shadows (lebih kuat di dark) ───────────── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-blue: 0 4px 14px rgba(37, 99, 235, 0.4);
+
+  /* ── Blue tones (sedikit lebih terang di dark) ─ */
+  --blue-50: rgba(108, 99, 255, 0.12);
+  --blue-100: rgba(108, 99, 255, 0.18);
+  --blue-200: rgba(108, 99, 255, 0.3);
+
+  /* ── Green tones ────────────────────────────── */
+  --green-50: rgba(22, 163, 74, 0.12);
+  --green-100: rgba(22, 163, 74, 0.2);
+
+  /* ── Yellow tones ───────────────────────────── */
+  --yellow-50: rgba(202, 138, 4, 0.12);
+  --yellow-100: rgba(202, 138, 4, 0.2);
+
+  /* ── Purple tones ───────────────────────────── */
+  --purple-50: rgba(147, 51, 234, 0.12);
+  --purple-100: rgba(147, 51, 234, 0.2);
+
+  /* ── Red tones ──────────────────────────────── */
+  --red-50: rgba(220, 38, 38, 0.12);
+  --red-100: rgba(220, 38, 38, 0.2);
+  /* ── navbar ──────────────────────────────── */
+  --navnew-text: #f1f5f9;
+  --navnew-muted: #94a3b8;
+  --navnew-accent-lt: rgba(108, 92, 231, 0.15);
+  --navnew-border: rgba(108, 92, 231, 0.25);
+}

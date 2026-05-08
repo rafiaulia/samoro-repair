@@ -180,6 +180,8 @@ fetch("/navbar.html")
   .then(data => {
     const nav = document.getElementById("navbar-placeholder");
     if (nav) nav.innerHTML = data;
+
+    setActiveNavLink(); // ← tambah ini
   });
 
 // load footer
